@@ -31,10 +31,6 @@ export default class extends Phaser.State {
     this.addMenuOption('[Start]', function () {
       game.state.start('Game')
     })
-
-    this.addMenuOption('[Highscore]', function () {
-      game.state.start('Game')
-    })
   }
 
   addMenuOption (text, callback) {
