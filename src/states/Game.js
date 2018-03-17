@@ -1,6 +1,11 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
+import chars from '../chars'
+
+let startPositionX = 300
+const blockSize = 50
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -10,6 +15,12 @@ export default class extends Phaser.State {
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.refresh()
+
+    if (localStorage.hasOwnProperty('highScore')) {
+      this.highScore = localStorage.getItem('highScore')
+    } else {
+      this.highScore = 0
+    }
   }
 
   preload () {
@@ -18,14 +29,19 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
-    this.load.image('targetcross', './assets/images/targetcross.png')
+
+    this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
 
   create () {
     game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
-    game.world.setBounds(0, 0, game.width * 5, game.height)
+    const totalGameWidth = chars.length * blockSize + startPositionX + 200
+    game.world.setBounds(0, 0, totalGameWidth, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
+
+    const music = game.add.audio('sound')
+    music.play()
 
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
@@ -33,6 +49,16 @@ export default class extends Phaser.State {
     this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
+
+    this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore.visible = false
+    this.displayScore.fixedToCamera = true
+    this.score = 0
+
+    this.displayHighScore = game.add.text(game.width / 4, 170, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore.text = 'Highscore: ' + this.highScore
+    this.displayHighScore.visible = true
+    this.displayHighScore.fixedToCamera = true
 
     this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
@@ -43,14 +69,10 @@ export default class extends Phaser.State {
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
-    this.weapon.trackSprite(this.player, 14, 0)
+    this.weapon.trackSprite(this.player, 130, 20)
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
-
-    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
-    let startPositionX = 300
-    const blockSize = 50
 
     for (let i = 0; i < chars.length; i++) {
       startPositionX += blockSize + 10
@@ -90,27 +112,56 @@ export default class extends Phaser.State {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
         this.weapon.fire()
-        this.removeLetter(nextBlock)
       }
+    }
+
+    if (this.blocks.countLiving() === 0) {
+      this.win()
     }
 
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
+    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  win () {
+    this.showText('!YEAH!')
+    this.enemy.kill()
+    this.setHighScore()
+  }
+
+  showText (text) {
+    this.stateText.text = text
+    this.stateText.visible = true
+    this.stateText.bringToTop()
   }
 
   killPlayer () {
     this.player.kill()
-
-    this.stateText.text = ' GAME OVER \n Click to restart'
-    this.stateText.visible = true
-    this.stateText.bringToTop()
+    this.showText('GAME OVER \n Click to restart')
+    this.setHighScore()
 
     game.input.onTap.addOnce(this.restart, this)
   }
 
-  removeLetter (letter) {
-    letter.kill()
+  removeBlock (bullet, block) {
+    block.kill()
+    bullet.kill()
+    this.refreshScore()
+  }
+
+  refreshScore () {
+    console.log('refreshscore')
+    this.score += 1
+    this.displayScore.text = ' Score: ' + this.score
+    this.displayScore.visible = true
+  }
+
+  setHighScore () {
+    if (this.score > this.highScore) {
+      localStorage.setItem('highScore', this.score)
+    }
   }
 
   restart () {
@@ -119,8 +170,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      game.debug.cameraInfo(game.camera, 32, 32)
-      game.debug.spriteCoords(this.player, 32, 250)
+      // game.debug.cameraInfo(game.camera, 32, 32)
+      // game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
