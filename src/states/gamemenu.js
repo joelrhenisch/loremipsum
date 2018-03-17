@@ -43,16 +43,15 @@ export default class extends Phaser.State {
       align: 'center'
     })
     txt.anchor.setTo(0.5)
-    txt.stroke = 'rgba(0,0,0,0)'
-    txt.strokeThickness = 4
 
     var onOver = function (target) {
-      target.fill = '#FEFFD5'
-      target.stroke = 'rgba(200,200,200,0.5)'
+      target.fill = '#FFFFFF'
+      target.stroke = '#008dff'
+      target.strokeThickness = 3
       txt.useHandCursor = true
     }
     var onOut = function (target) {
-      target.fill = 'white'
+      target.fill = '#FFFFFF'
       target.stroke = 'rgba(0,0,0,0)'
       txt.useHandCursor = false
     }
