@@ -9,6 +9,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.load.image('player', './assets/images/raumschiff.png')
+    this.load.image('enemy', './assets/images/raumschiff.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
   }
@@ -21,9 +22,13 @@ export default class extends Phaser.State {
     game.world.enableBody = true
 
     // Create the player in the middle of the game
-    this.player = game.add.sprite(10, 100, 'player')
+    this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
+    this.enemy = game.add.sprite(0, 100, 'enemy')
+    this.enemy.scale.setTo(0.2, 0.25)
+
+    this.ground = game.add.group()
     this.block = game.add.group()
 
     var chars = [
@@ -62,6 +67,28 @@ export default class extends Phaser.State {
     }
 
     game.physics.arcade.collide(this.player, this.block)
+    this.enemy.body.velocity.x = 100
+    // } else {
+    //   this.player.body.velocity.x = 0
+    // }
+    //
+    // // Make the player jump if he is touching the ground
+    // if (this.cursor.up.isDown && this.player.body.touching.down) {
+    //   this.player.body.velocity.y = -250
+    // }
+
+    // Make the player and the walls collide
+    game.physics.arcade.collide(this.player, this.ground)
+
+    // Call the 'takeCoin' function when the player takes a coin
+    game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
+
+    // Call the 'restart' function when the enemy touches the player
+    game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  killPlayer() {
+    this.player.kill()
   }
 
   removeLetter (letter) {
