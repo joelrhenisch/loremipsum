@@ -10,13 +10,13 @@ export default class extends Phaser.State {
 
     this.keys = {}
 
-    this.titleText = game.make.text(game.world.centerX, 100, "Lorem Ipsum", {
+    this.titleText = game.make.text(game.world.centerX, 100, 'Lorem Ipsum', {
       font: 'bold 50pt Arial',
       fill: '#FFFFFF',
       align: 'center'
     })
     this.titleText.anchor.set(0.5)
-    this.optionCount = 1;
+    this.optionCount = 1
   }
 
   preload () {
@@ -29,24 +29,22 @@ export default class extends Phaser.State {
     game.add.existing(this.titleText)
 
     this.addMenuOption('[Start]', function () {
-          game.state.start("Game");
-    });
+      game.state.start('Game')
+    })
 
     this.addMenuOption('[Highscore]', function () {
-          game.state.start("Game");
-    });
-
+      game.state.start('Game')
+    })
   }
 
-  addMenuOption(text, callback) {
-   var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 100, text, {
-     fill: '#FFFFFF',
-     align: 'center'
-   });
-   txt.anchor.setTo(0.5);
-   txt.stroke = "rgba(0,0,0,0)";
-   txt.strokeThickness = 4;
-
+  addMenuOption (text, callback) {
+    var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 100, text, {
+      fill: '#FFFFFF',
+      align: 'center'
+    })
+    txt.anchor.setTo(0.5)
+    txt.stroke = 'rgba(0,0,0,0)'
+    txt.strokeThickness = 4
 
     var onOver = function (target) {
       target.fill = '#FEFFD5'
