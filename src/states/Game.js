@@ -1,5 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
+var bg;
 
 export default class extends Phaser.State {
   init () {
@@ -12,13 +13,12 @@ export default class extends Phaser.State {
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
     this.load.image('background', './assets/images/background.png')
-
-    var background;
   }
+
 
   create () {
     game.stage.backgroundColor = '#3598db'
-    background = game.add.tileSprite(0, 0, 760, 400, 'background')
+    bg = game.add.tileSprite(0, 0, 760, 400, 'background')
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -72,7 +72,7 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    background.tilePosition.x += 2
+    bg.tilePosition.x -= 2
 
     let nextBlock = this.block.getFirstAlive()
     if (nextBlock) {
