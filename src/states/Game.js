@@ -169,14 +169,8 @@ export default class extends Phaser.State {
   }
 
   removeBlock (bullet, block) {
-    //let indexOfAimingBlock = this.blocks.getIndex(block)
-    //let aimingBlock = this.blocks.getAt(indexOfAimingBlock + 1)
-    //this.targetcross.position = aimingBlock.position
-
     block.kill()
     bullet.kill()
-
-
     this.refreshScore()
   }
 
