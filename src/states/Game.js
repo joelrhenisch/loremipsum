@@ -5,6 +5,7 @@ import chars from '../chars'
 
 let startPositionX = 600
 const blockSize = 50
+var yOffset = -100
 
 /* global game, __DEV__ */
 export default class extends Phaser.State {
@@ -62,10 +63,10 @@ export default class extends Phaser.State {
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(200, game.world.centerY / 2, 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2 -yOffset, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.enemy = game.add.sprite(100, game.world.centerY / 2, 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2 -yOffset, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
@@ -83,7 +84,7 @@ export default class extends Phaser.State {
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(blockpositionX, game.world.centerY / 2, 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2 -yOffset, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -95,7 +96,7 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2, 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 -yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
