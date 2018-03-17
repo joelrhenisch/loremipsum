@@ -85,6 +85,9 @@ export default class extends Phaser.State {
     this.player = game.add.sprite(200, game.world.centerY / 2 - yOffset, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
+    this.cameraplayer = game.add.sprite(this.player.position.x + 300, game.world.centerY / 2 - yOffset, 'cameraplayer')
+    this.cameraplayer.alpha = 0
+
     this.enemy = game.add.sprite(100, game.world.centerY / 2 - yOffset, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
@@ -94,7 +97,7 @@ export default class extends Phaser.State {
     this.weapon.trackSprite(this.player, 130, 20)
     this.weapon.bulletSpeed = 400
 
-    game.camera.follow(this.player)
+    game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
 
     var blockpositionX = startPositionX
@@ -125,7 +128,6 @@ export default class extends Phaser.State {
   registerKeys () {
     for (let key in Phaser.KeyCode) {
       if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z0-9]/i)) {
-
         let realKey = it[key] || key
         this.keys[realKey] = this.input.keyboard.addKey(Phaser.KeyCode[key])
       }
@@ -136,6 +138,7 @@ export default class extends Phaser.State {
     this.enemyVelocity = this.enemyVelocity + 0.1
     this.playerVelocity = this.playerVelocity + 0.1
     this.player.body.velocity.x = this.playerVelocity
+    this.cameraplayer.position.x = this.player.position.x + 300
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
 
@@ -155,7 +158,7 @@ export default class extends Phaser.State {
         this.previousLetter = ''
       }
     }
-    console.log(this.blocks)
+
     if (this.blocks.countLiving() === 0) {
       this.win()
     }
@@ -167,7 +170,7 @@ export default class extends Phaser.State {
   }
 
   win () {
-    this.showText('YEAH!')
+    this.showText('!!YEAH!!')
     this.enemy.kill()
     this.setHighScore()
     this.targetcross.kill()
@@ -181,7 +184,7 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
-    this.showText('GAME OVER \nClick to restart')
+    this.showText('!!GAME OVER!!\nclick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
     game.input.onTap.addOnce(this.restart, this)
