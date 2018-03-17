@@ -19,6 +19,7 @@ export default class extends Phaser.State {
     if (localStorage.hasOwnProperty('highScore')) {
       this.highScore = localStorage.getItem('highScore')
     } else {
+      localStorage.setItem('highScore', '0')
       this.highScore = 0
     }
   }
