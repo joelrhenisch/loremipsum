@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 
 import chars from '../chars'
 
-let startPositionX = 300
+let startPositionX = 600
 const blockSize = 50
 
 /* global game, __DEV__ */
@@ -62,10 +62,10 @@ export default class extends Phaser.State {
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.enemy = game.add.sprite(0, game.world.centerY / 2, 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
