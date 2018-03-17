@@ -44,12 +44,15 @@ export default class extends Phaser.State {
 
     this.blocks = game.add.group()
 
-    var chars = 'fjfjffjfjfgh'
-
+    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
     let startPositionX = 300
     const blockSize = 50
 
-    for (var i = 0; i < chars.length; i++) {
+    for (let i = 0; i < chars.length; i++) {
+      startPositionX += blockSize + 10
+      if (chars[i] === ' ') {
+        continue
+      }
       let block = game.add.sprite(startPositionX, 100, 'block')
       block.height = blockSize
       block.width = blockSize
@@ -60,7 +63,6 @@ export default class extends Phaser.State {
       })
       block.addChild(text)
       this.blocks.add(block)
-      startPositionX += blockSize + 10
     }
 
     this.registerKeys()
