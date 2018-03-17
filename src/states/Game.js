@@ -38,7 +38,7 @@ export default class extends Phaser.State {
   create () {
     game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
-    const totalGameWidth = chars.length * blockSize + startPositionX + 200
+    const totalGameWidth = chars.length * blockSize + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -95,7 +95,7 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX+blockSize+10, game.world.centerY / 2, 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
@@ -121,7 +121,7 @@ export default class extends Phaser.State {
         this.weapon.fire()
       }
     }
-
+    console.log(this.blocks)
     if (this.blocks.countLiving() === 0) {
       this.win()
     }
