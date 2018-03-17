@@ -51,7 +51,7 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(game.world.centerX / 2, game.world.centerY / 2 + 200, ' ', { font: '60px Arial', fill: 'red' })
+    this.stateText = game.add.text(game.world.centerX / 2, 20, ' ', { font: 'bold 60px Arial', fill: 'white', align: 'center' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
@@ -142,7 +142,7 @@ export default class extends Phaser.State {
   }
 
   win () {
-    this.showText('!YEAH!')
+    this.showText("YEAH!")
     this.enemy.kill()
     this.setHighScore()
     this.targetcross.kill()
