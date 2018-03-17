@@ -114,10 +114,6 @@ export default class extends Phaser.State {
 
     game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
-    this.explosions = game.add.group()
-    this.explosions.createMultiple(30, 'kaboom')
-    this.explosions.forEach(this.setupInvader, this)
-
     var blockpositionX = startPositionX
 
     for (let i = 0; i < chars.length; i++) {
@@ -139,18 +135,21 @@ export default class extends Phaser.State {
       //this.explosions.add(explosion)
     }
 
+    //  An explosion pool
+    this.explosions = game.add.group()
+    this.explosions.createMultiple(this.blocks.length, 'kaboom')
+    this.explosions.forEach(this.setupExplosions, this)
+
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
   }
 
-  setupInvader(invader) {
-
-  invader.anchor.x = 0.5;
-  invader.anchor.y = 0.5;
-  invader.animations.add('kaboom');
-
+  setupExplosions(explosion) {
+    explosion.anchor.x = 0.5;
+    explosion.anchor.y = 0.5;
+    explosion.animations.add('kaboom');
 }
 
   registerKeys () {
