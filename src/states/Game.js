@@ -4,7 +4,6 @@ import Phaser from 'phaser'
 export default class extends Phaser.State {
   init () {
     this.keys = {}
-    this.blocks = []
   }
 
   preload () {
@@ -49,7 +48,6 @@ export default class extends Phaser.State {
     block.addChild(text)
     this.block.add(block)
     block.body.immovable = true
-    this.blocks.push(block)
 
     this.registerKeys()
   }
@@ -65,9 +63,13 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    if (this.keys.A.isDown) {
-      this.player.body.velocity.x = 50
-      this.removeLetter(this.blocks[0])
+    let nextBlock = this.block.getFirstAlive()
+    if (nextBlock) {
+      let nextLetter = nextBlock.value
+      if (this.keys[nextLetter].isDown) {
+        this.player.body.velocity.x = 50
+        this.removeLetter(nextBlock)
+      }
     }
 
     game.physics.arcade.collide(this.player, this.block)
