@@ -50,7 +50,7 @@ export default class extends Phaser.State {
     this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
-    this.load.image('background', './assets/images/background.png')
+    //this.load.image('background', './assets/images/background.png')
     this.load.image('targetcross', './assets/images/targetcross.png')
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
@@ -59,7 +59,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    game.stage.backgroundColor = '#3598db'
+    //game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
     const totalGameWidth = chars.length * blockSize + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
@@ -70,7 +70,15 @@ export default class extends Phaser.State {
     this.shootSound = game.add.audio('shoot')
     this.explosionSound = game.add.audio('explosion')
 
-    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    //this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    var myBackgroundGradient = game.add.bitmapData(game.width, game.height);
+    var grd = myBackgroundGradient.context.createLinearGradient(0,0,0,game.height);
+    grd.addColorStop(0, "#4459FF");
+    grd.addColorStop(1, "#D244FF");
+    myBackgroundGradient.context.fillStyle = grd;
+    myBackgroundGradient.context.fillRect(0,0,game.width,game.height);
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, myBackgroundGradient);
+
     this.bg.fixedToCamera = true
 
     this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
