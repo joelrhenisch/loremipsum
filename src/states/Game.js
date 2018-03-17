@@ -1,6 +1,5 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-var bg;
 
 export default class extends Phaser.State {
   init () {
@@ -15,19 +14,18 @@ export default class extends Phaser.State {
     this.load.image('background', './assets/images/background.png')
   }
 
-
   create () {
     game.stage.backgroundColor = '#3598db'
-    bg = game.add.tileSprite(0, 0, 760, 400, 'background')
+    this.bg = game.add.tileSprite(0, 0, 760, 400, 'background')
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
     game.world.enableBody = true
 
     //  Text
-    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' });
-    this.stateText.anchor.setTo(0.5, 0.5);
-    this.stateText.visible = false;
+    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' })
+    this.stateText.anchor.setTo(0.5, 0.5)
+    this.stateText.visible = false
 
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
@@ -41,11 +39,6 @@ export default class extends Phaser.State {
     var chars = [
       'fj fj fjfj fj'
     ]
-    const width = 100
-
-    for (let x = 0; x < chars.length; x++) {
-
-    }
 
     let block = game.add.sprite(300, 100, 'block')
     block.height = 50
@@ -72,7 +65,7 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    bg.tilePosition.x -= 2
+    this.bg.tilePosition.x -= 2
 
     let nextBlock = this.block.getFirstAlive()
     if (nextBlock) {
@@ -107,11 +100,11 @@ export default class extends Phaser.State {
   killPlayer () {
     this.player.kill()
 
-    this.stateText.text = " GAME OVER \n Click to restart";
-    this.stateText.visible = true;
+    this.stateText.text = ' GAME OVER \n Click to restart'
+    this.stateText.visible = true
 
-    //the "click to restart" handler
-    game.input.onTap.addOnce(this.restart, this);
+    // the "click to restart" handler
+    game.input.onTap.addOnce(this.restart, this)
   }
 
   removeLetter (letter) {
