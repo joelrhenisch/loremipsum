@@ -57,7 +57,7 @@ export default class extends Phaser.State {
     this.displayScore.fixedToCamera = true
     this.score = 0
 
-    this.displayHighScore = game.add.text(50, 100, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore = game.add.text(50, 20, ' ', { font: '20px Arial', fill: 'white' })
     this.displayHighScore.text = 'Highscore: ' + this.highScore
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
@@ -161,7 +161,7 @@ export default class extends Phaser.State {
   refreshScore () {
     console.log('refreshscore')
     this.score += 1
-    this.displayScore.text = ' Score: ' + this.score
+    this.displayScore.text = 'Score: ' + this.score
     this.displayScore.visible = true
   }
 
