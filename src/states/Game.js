@@ -121,9 +121,11 @@ export default class extends Phaser.State {
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
-        this.indexOfAimingBlock = this.indexOfAimingBlock + 1
-        let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
-        this.targetcross.position = aimingBlock.position
+        if (this.indexOfAimingBlock+1 < this.blocks.length) {
+          this.indexOfAimingBlock = this.indexOfAimingBlock + 1
+          let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
+          this.targetcross.position = aimingBlock.position
+        }
         this.weapon.fire()
       }
     }
