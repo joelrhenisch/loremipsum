@@ -7,10 +7,25 @@ let startPositionX = 600
 const blockSize = 50
 var yOffset = -100
 
+let it = {
+  '1': 'ONE',
+  '2': 'TWO',
+  '3': 'THREE',
+  '4': 'FOUR',
+  '5': 'FIVE',
+  '6': 'SIX',
+  '7': 'SEVEN',
+  '8': 'EIGHT',
+  '9': 'NINE',
+  '0': 'ZERO',
+  ',': 'COMMA',
+  '.': 'PERIOD'
+}
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
-  init() {
-    this.indexOfAimingBlock = 0;
+  init () {
+    this.indexOfAimingBlock = 0
     this.keys = {}
     this.previousLetter = ''
     this.enemyVelocity = 90
@@ -67,17 +82,17 @@ export default class extends Phaser.State {
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(200, game.world.centerY / 2 -yOffset, 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2 - yOffset, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.enemy = game.add.sprite(100, game.world.centerY / 2 -yOffset, 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2 - yOffset, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
     this.weapon.trackSprite(this.player, 130, 20)
-    this.weapon.bulletSpeed = 400;
+    this.weapon.bulletSpeed = 400
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
@@ -89,7 +104,7 @@ export default class extends Phaser.State {
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(blockpositionX, game.world.centerY / 2 -yOffset, 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -101,7 +116,7 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 -yOffset, 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
@@ -109,15 +124,17 @@ export default class extends Phaser.State {
 
   registerKeys () {
     for (let key in Phaser.KeyCode) {
-      if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z]/i)) {
-        this.keys[key] = this.input.keyboard.addKey(Phaser.KeyCode[key])
+      if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z0-9]/i)) {
+
+        let realKey = it[key] || key
+        this.keys[realKey] = this.input.keyboard.addKey(Phaser.KeyCode[key])
       }
     }
   }
 
-  update() {
+  update () {
     this.enemyVelocity = this.enemyVelocity + 0.1
-    this.playerVelocity = this.playerVelocity + 0.1 
+    this.playerVelocity = this.playerVelocity + 0.1
     this.player.body.velocity.x = this.playerVelocity
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
@@ -125,6 +142,7 @@ export default class extends Phaser.State {
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
     if (nextBlock) {
       let nextLetter = nextBlock.value
+      nextLetter = it[nextLetter] || nextLetter
       if (this.keys[nextLetter].isDown && nextLetter != this.previousLetter) {
         this.previousLetter = nextLetter
         if (this.indexOfAimingBlock + 1 < this.blocks.length) {
@@ -133,8 +151,7 @@ export default class extends Phaser.State {
           this.targetcross.position = aimingBlock.position
         }
         this.weapon.fire()
-      }
-      else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
+      } else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
         this.previousLetter = ''
       }
     }
@@ -150,7 +167,7 @@ export default class extends Phaser.State {
   }
 
   win () {
-    this.showText("YEAH!")
+    this.showText('YEAH!')
     this.enemy.kill()
     this.setHighScore()
     this.targetcross.kill()
