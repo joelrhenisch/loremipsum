@@ -91,23 +91,26 @@ export default class extends Phaser.State {
     this.bottombg = game.add.tileSprite(0, game.height-100, game.width, game.height, myBottomGradient);
     this.bottombg.fixedToCamera = true
 
+    this.drawMountain(0.5,Math.floor((Math.random() * 200) + 100),Math.floor((Math.random() * 400) + 100),0)
     var mountainOffset = 0
     while(mountainOffset <= totalGameWidth) {
       let randWidth = Math.floor((Math.random() * 200) + 100)
       mountainOffset += randWidth
+
+      this.drawCloud(0.3, Math.floor((Math.random() * 100) + 60), mountainOffset)
       this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
     }
 
-    this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
+    this.stateText = game.add.text(50, 100, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
-    this.displayScore = game.add.text(50, 50, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore = game.add.text(50, 80, ' ', { font: '20px Arial', fill: 'white' })
     this.displayScore.visible = false
     this.displayScore.fixedToCamera = true
     this.score = 0
 
-    this.displayHighScore = game.add.text(50, 20, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore = game.add.text(50, 40, ' ', { font: '20px Arial', fill: 'white' })
     this.displayHighScore.text = 'Highscore: ' + this.highScore
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
@@ -151,8 +154,6 @@ export default class extends Phaser.State {
 
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
-
-
 
     this.registerKeys()
   }
@@ -270,6 +271,17 @@ export default class extends Phaser.State {
     graphics.alpha = alpha
     graphics.lineTo(triangleX, triangleY);
     graphics.lineTo(-triangleX, triangleY);
+    graphics.endFill();
+  }
+
+  drawCloud(alpha, width, offset){
+    var graphics = game.add.graphics(0+offset, 0);
+    graphics.beginFill(0xFFFFFF);
+    graphics.alpha = alpha
+    //graphics.drawCircle(0, 0, radius);
+    //graphics.drawCircle(Math.floor((Math.random() * 100) + 60), 0, radius);
+    graphics.drawEllipse(0, 0, width, width/2.5);
+    graphics.drawEllipse((Math.random() * 100) + 60, 0, width, width/3);
     graphics.endFill();
   }
 
