@@ -9,7 +9,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.load.image('player', './assets/images/raumschiff.png')
-    this.load.image('enemy', './assets/images/raumschiff.png')
+    this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
   }
