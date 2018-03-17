@@ -29,6 +29,7 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
+    this.load.image('targetcross', './assets/images/targetcross.png')
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
@@ -70,6 +71,8 @@ export default class extends Phaser.State {
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
     this.weapon.trackSprite(this.player, 130, 20)
+
+    this.targetcross = game.add.sprite(0,0, 'targetcross')
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
