@@ -73,6 +73,7 @@ export default class extends Phaser.State {
     this.explosionSound = game.add.audio('explosion')
 
     //this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    //background canvas
     var myBackgroundGradient = game.add.bitmapData(game.width, game.height);
     var grd = myBackgroundGradient.context.createLinearGradient(0,0,0,game.height);
     grd.addColorStop(0, "#4459FF");
@@ -80,19 +81,38 @@ export default class extends Phaser.State {
     myBackgroundGradient.context.fillStyle = grd;
     myBackgroundGradient.context.fillRect(0,0,game.width,game.height);
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, myBackgroundGradient);
-
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
+    //bottomline canvas ???
+    var myBottomGradient = game.add.bitmapData(game.width, 100);
+    var grdbtm = myBottomGradient.context.createLinearGradient(0,0,0,game.height);
+    grdbtm.addColorStop(0, "#00A0FF");
+    grdbtm.addColorStop(1, "#002CFF");
+    myBottomGradient.context.fillStyle = grdbtm;
+    myBottomGradient.context.fillRect(0,game.height-100,game.width,game.height);
+    this.bottombg = game.add.tileSprite(0, game.height-100, game.width, game.height, myBottomGradient);
+    this.bottombg.fixedToCamera = true
+
+    this.drawMountain(0.5,Math.floor((Math.random() * 200) + 100),Math.floor((Math.random() * 400) + 100),0)
+    var mountainOffset = 0
+    while(mountainOffset <= totalGameWidth) {
+      let randWidth = Math.floor((Math.random() * 200) + 100)
+      mountainOffset += randWidth
+
+      this.drawCloud(0.3, Math.floor((Math.random() * 100) + 60), mountainOffset)
+      this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
+    }
+
+    this.stateText = game.add.text(50, 100, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
-    this.displayScore = game.add.text(50, 50, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore = game.add.text(50, 80, ' ', { font: '20px Arial', fill: 'white' })
     this.displayScore.visible = false
     this.displayScore.fixedToCamera = true
     this.score = 0
 
-    this.displayHighScore = game.add.text(50, 20, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore = game.add.text(50, 40, ' ', { font: '20px Arial', fill: 'white' })
     this.displayHighScore.text = 'Highscore: ' + this.highScore
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
@@ -263,6 +283,27 @@ export default class extends Phaser.State {
     this.ended = false
     game.state.start('Game')
   }
+
+  drawMountain(alpha, triangleX, triangleY, offset) {
+    var graphics = game.add.graphics(triangleX/2+offset, game.height-triangleY);
+    graphics.beginFill(0xFFFFFF);
+    graphics.alpha = alpha
+    graphics.lineTo(triangleX, triangleY);
+    graphics.lineTo(-triangleX, triangleY);
+    graphics.endFill();
+  }
+
+  drawCloud(alpha, width, offset){
+    var graphics = game.add.graphics(0+offset, 0);
+    graphics.beginFill(0xFFFFFF);
+    graphics.alpha = alpha
+    //graphics.drawCircle(0, 0, radius);
+    //graphics.drawCircle(Math.floor((Math.random() * 100) + 60), 0, radius);
+    graphics.drawEllipse(0, 0, width, width/2.5);
+    graphics.drawEllipse((Math.random() * 100) + 60, 0, width, width/3);
+    graphics.endFill();
+  }
+
 
   render () {
     if (__DEV__) {
