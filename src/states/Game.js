@@ -91,6 +91,13 @@ export default class extends Phaser.State {
     this.bottombg = game.add.tileSprite(0, game.height-100, game.width, game.height, myBottomGradient);
     this.bottombg.fixedToCamera = true
 
+    var mountainOffset = 0
+    while(mountainOffset <= totalGameWidth) {
+      let randWidth = Math.floor((Math.random() * 200) + 100)
+      mountainOffset += randWidth
+      this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
+    }
+
     this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
@@ -145,12 +152,7 @@ export default class extends Phaser.State {
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
-    var mountainOffset = 0
-    while(mountainOffset <= totalGameWidth) {
-      let randWidth = Math.floor((Math.random() * 200) + 100)
-      mountainOffset += randWidth
-      this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
-    }
+
 
     this.registerKeys()
   }
