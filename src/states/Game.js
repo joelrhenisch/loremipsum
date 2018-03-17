@@ -145,6 +145,7 @@ export default class extends Phaser.State {
     this.showText('!YEAH!')
     this.enemy.kill()
     this.setHighScore()
+    this.targetcross.kill()
   }
 
   showText (text) {
