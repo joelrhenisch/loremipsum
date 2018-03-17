@@ -3,6 +3,9 @@ import Phaser from 'phaser'
 
 import chars from '../chars'
 
+let startPositionX = 300
+const blockSize = 50
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -33,7 +36,8 @@ export default class extends Phaser.State {
   create () {
     game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
-    game.world.setBounds(0, 0, game.width * 5, game.height)
+    const totalGameWidth = chars.length * blockSize + startPositionX + 200
+    game.world.setBounds(0, 0, totalGameWidth, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
     const music = game.add.audio('sound')
@@ -70,9 +74,6 @@ export default class extends Phaser.State {
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
-
-    let startPositionX = 300
-    const blockSize = 50
 
     for (let i = 0; i < chars.length; i++) {
       startPositionX += blockSize + 10
@@ -115,40 +116,53 @@ export default class extends Phaser.State {
       }
     }
 
+    if (this.blocks.countLiving() === 0) {
+      this.win()
+    }
+
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
-    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this);
+    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  win () {
+    this.showText('!YEAH!')
+    this.enemy.kill()
+    this.setHighScore()
+  }
+
+  showText (text) {
+    this.stateText.text = text
+    this.stateText.visible = true
+    this.stateText.bringToTop()
   }
 
   killPlayer () {
     this.player.kill()
-
-    this.stateText.text = ' GAME OVER \n Click to restart'
-    this.stateText.visible = true
-    this.stateText.bringToTop()
-
-    if (this.score > this.highScore) {
-      localStorage.setItem('highScore', this.score)
-    }
+    this.showText('GAME OVER \n Click to restart')
+    this.setHighScore()
 
     game.input.onTap.addOnce(this.restart, this)
   }
 
-  removeBlock(bullet, block) {
+  removeBlock (bullet, block) {
     block.kill()
     bullet.kill()
-  }
-
-  removeLetter (letter) {
-    letter.kill()
     this.refreshScore()
   }
 
   refreshScore () {
+    console.log('refreshscore')
     this.score += 1
     this.displayScore.text = ' Score: ' + this.score
     this.displayScore.visible = true
+  }
+
+  setHighScore () {
+    if (this.score > this.highScore) {
+      localStorage.setItem('highScore', this.score)
+    }
   }
 
   restart () {
@@ -157,8 +171,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      //game.debug.cameraInfo(game.camera, 32, 32)
-      //game.debug.spriteCoords(this.player, 32, 250)
+      // game.debug.cameraInfo(game.camera, 32, 32)
+      // game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
