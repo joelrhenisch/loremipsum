@@ -14,7 +14,7 @@ export default class extends Phaser.State {
     this.keys = {}
     this.previousLetter = ''
     this.enemyVelocity = 90
-    this.playerVelocity = 100 
+    this.playerVelocity = 100
 
     // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
@@ -53,7 +53,7 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(game.world.centerX / 2, 20, ' ', { font: 'bold 60px Arial', fill: 'white', align: 'center' })
+    this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
@@ -164,7 +164,7 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
-    this.showText('GAME OVER \n Click to restart')
+    this.showText('GAME OVER \nClick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
     game.input.onTap.addOnce(this.restart, this)
