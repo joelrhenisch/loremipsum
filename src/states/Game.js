@@ -7,6 +7,21 @@ let startPositionX = 600
 const blockSize = 50
 var yOffset = -100
 
+let it = {
+  '1': 'ONE',
+  '2': 'TWO',
+  '3': 'THREE',
+  '4': 'FOUR',
+  '5': 'FIVE',
+  '6': 'SIX',
+  '7': 'SEVEN',
+  '8': 'EIGHT',
+  '9': 'NINE',
+  '0': 'ZERO',
+  ',': 'COMMA',
+  '.': 'PERIOD'
+}
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -117,8 +132,9 @@ export default class extends Phaser.State {
 
   registerKeys () {
     for (let key in Phaser.KeyCode) {
-      if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z]/i)) {
-        this.keys[key] = this.input.keyboard.addKey(Phaser.KeyCode[key])
+      if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z0-9]/i)) {
+        let realKey = it[key] || key
+        this.keys[realKey] = this.input.keyboard.addKey(Phaser.KeyCode[key])
       }
     }
   }
@@ -134,6 +150,7 @@ export default class extends Phaser.State {
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
     if (nextBlock) {
       let nextLetter = nextBlock.value
+      nextLetter = it[nextLetter] || nextLetter
       if (this.keys[nextLetter].isDown && nextLetter != this.previousLetter) {
         this.previousLetter = nextLetter
         if (this.indexOfAimingBlock + 1 < this.blocks.length) {
