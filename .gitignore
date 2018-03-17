@@ -8,3 +8,6 @@ dist/
 /index.html
 build/
 
+/.vs/config/applicationhost.config
+/.vs/loremipsum/v15/.suo
+/.vs/slnx.sqlite
