@@ -9,16 +9,13 @@ export default class extends Phaser.State {
     this.game.scale.refresh()
 
     this.keys = {}
+
     this.titleText = game.make.text(game.world.centerX, 100, 'Lorem Ipsum', {
-      fill: '#FDFFB5',
+      font: 'bold 50pt Arial',
+      fill: '#FFFFFF',
       align: 'center'
     })
     this.titleText.anchor.set(0.5)
-    this.startText = game.make.text(game.world.centerX, 150, 'Start', {
-      fill: '#FDFFB5',
-      align: 'center'
-    })
-    this.startText.anchor.set(0.5)
     this.optionCount = 1
   }
 
@@ -31,15 +28,22 @@ export default class extends Phaser.State {
     game.add.sprite(0, 0, 'background')
     game.add.existing(this.titleText)
 
-    this.addMenuOption('Start', function () {
+    this.addMenuOption('[Start]', function () {
+      game.state.start('Game')
+    })
+
+    this.addMenuOption('[Highscore]', function () {
       game.state.start('Game')
     })
   }
 
   addMenuOption (text, callback) {
-    var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 200, text)
+    var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 100, text, {
+      fill: '#FFFFFF',
+      align: 'center'
+    })
     txt.anchor.setTo(0.5)
-    txt.stroke = 'rgba(0,0,0,0'
+    txt.stroke = 'rgba(0,0,0,0)'
     txt.strokeThickness = 4
 
     var onOver = function (target) {

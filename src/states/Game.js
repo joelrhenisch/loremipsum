@@ -24,6 +24,8 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
+
+    this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
 
   create () {
@@ -32,11 +34,15 @@ export default class extends Phaser.State {
     game.world.setBounds(0, 0, game.width * 5, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
+    const music = game.add.audio('sound')
+    music.play()
+
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(game.width / 4, 100, ' ', { font: '60px Arial', fill: 'red' })
+    this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
+    this.stateText.fixedToCamera = true
 
     this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
     this.displayScore.visible = false
@@ -57,7 +63,7 @@ export default class extends Phaser.State {
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
-    this.weapon.trackSprite(this.player, 14, 0)
+    this.weapon.trackSprite(this.player, 130, 20)
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
@@ -104,12 +110,12 @@ export default class extends Phaser.State {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
         this.weapon.fire()
-        this.removeLetter(nextBlock)
       }
     }
 
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
+    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this);
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
@@ -125,6 +131,11 @@ export default class extends Phaser.State {
     }
 
     game.input.onTap.addOnce(this.restart, this)
+  }
+
+  removeBlock(bullet, block) {
+    block.kill()
+    bullet.kill()
   }
 
   removeLetter (letter) {
