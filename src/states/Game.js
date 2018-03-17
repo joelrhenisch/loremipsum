@@ -72,17 +72,17 @@ export default class extends Phaser.State {
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
     this.weapon.trackSprite(this.player, 130, 20)
 
-    this.targetcross = game.add.sprite(0,0, 'targetcross')
-
     game.camera.follow(this.player)
     this.blocks = game.add.group()
 
+    var blockpositionX = startPositionX
+
     for (let i = 0; i < chars.length; i++) {
-      startPositionX += blockSize + 10
+      blockpositionX += blockSize + 10
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(startPositionX, game.world.centerY / 2, 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -93,6 +93,9 @@ export default class extends Phaser.State {
       block.addChild(text)
       this.blocks.add(block)
     }
+
+    this.targetcross = game.add.sprite(startPositionX+blockSize+10, game.world.centerY / 2, 'targetcross')
+    this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
   }
