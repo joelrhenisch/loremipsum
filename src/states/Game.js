@@ -141,7 +141,7 @@ export default class extends Phaser.State {
         this.previousLetter = ''
       }
     }
-    console.log(this.blocks)
+
     if (this.blocks.countLiving() === 0) {
       this.win()
     }
@@ -153,7 +153,7 @@ export default class extends Phaser.State {
   }
 
   win () {
-    this.showText('YEAH!')
+    this.showText('!!YEAH!!')
     this.enemy.kill()
     this.setHighScore()
     this.targetcross.kill()
@@ -167,7 +167,7 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
-    this.showText('GAME OVER \nClick to restart')
+    this.showText('!!GAME OVER!!\nclick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
     game.input.onTap.addOnce(this.restart, this)
