@@ -5,6 +5,11 @@ var bg;
 export default class extends Phaser.State {
   init () {
     this.keys = {}
+
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.refresh();
+
   }
 
   preload () {
@@ -18,7 +23,7 @@ export default class extends Phaser.State {
 
   create () {
     game.stage.backgroundColor = '#3598db'
-    bg = game.add.tileSprite(0, 0, 760, 400, 'background')
+    bg = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'background')
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 

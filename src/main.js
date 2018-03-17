@@ -3,6 +3,7 @@ import 'p2'
 import Phaser from 'phaser'
 
 import GameState from './states/Game'
+import GameMenu from './states/gamemenu'
 
 import config from './config'
 
@@ -14,9 +15,10 @@ class Game extends Phaser.Game {
 
     super(width, height, Phaser.CANVAS, 'content', null)
 
+    this.state.add('GameMenu', GameMenu, false)
     this.state.add('Game', GameState, false)
 
-    this.state.start('Game')
+    this.state.start('GameMenu')
   }
 }
 
