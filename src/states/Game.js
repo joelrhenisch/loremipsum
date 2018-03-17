@@ -115,7 +115,7 @@ export default class extends Phaser.State {
 
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
-    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this);
+    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
@@ -133,17 +133,14 @@ export default class extends Phaser.State {
     game.input.onTap.addOnce(this.restart, this)
   }
 
-  removeBlock(bullet, block) {
+  removeBlock (bullet, block) {
     block.kill()
     bullet.kill()
-  }
-
-  removeLetter (letter) {
-    letter.kill()
     this.refreshScore()
   }
 
   refreshScore () {
+    console.log('refreshscore')
     this.score += 1
     this.displayScore.text = ' Score: ' + this.score
     this.displayScore.visible = true
