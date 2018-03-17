@@ -7,6 +7,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.load.image('player', './assets/images/raumschiff.png')
+    this.load.image('enemy', './assets/images/raumschiff.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
   }
@@ -24,6 +25,9 @@ export default class extends Phaser.State {
     // Create the player in the middle of the game
     this.player = game.add.sprite(10, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
+
+    this.enemy = game.add.sprite(0, 100, 'enemy')
+    this.enemy.scale.setTo(0.2, 0.25)
 
     this.ground = game.add.group()
     this.block = game.add.group()
@@ -50,6 +54,7 @@ export default class extends Phaser.State {
     //   this.player.body.velocity.x = -200
     // } else if (this.cursor.right.isDown) {
     this.player.body.velocity.x = 200
+    this.enemy.body.velocity.x = 100
     // } else {
     //   this.player.body.velocity.x = 0
     // }
