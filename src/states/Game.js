@@ -6,6 +6,7 @@ import chars from '../chars'
 let startPositionX = 600
 const blockSize = 50
 var yOffset = -100
+var enemyVelocity
 
 
 /* global game, __DEV__ */
@@ -14,6 +15,7 @@ export default class extends Phaser.State {
     this.indexOfAimingBlock = 0;
     this.keys = {}
     this.previousLetter = ''
+    enemyVelocity = 90
 
     // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
@@ -116,7 +118,7 @@ export default class extends Phaser.State {
 
   update () {
     this.player.body.velocity.x = 100
-    this.enemy.body.velocity.x = 90
+    this.enemy.body.velocity.x = enemyVelocity
     this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
@@ -163,7 +165,7 @@ export default class extends Phaser.State {
     this.player.kill()
     this.showText('GAME OVER \n Click to restart')
     this.setHighScore()
-
+    enemyVelocity = 0
     game.input.onTap.addOnce(this.restart, this)
   }
 
