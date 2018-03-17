@@ -1,10 +1,9 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-
+/*global game*/
 export default class extends Phaser.State {
   init () {
     this.keys = {}
-    this.blocks = []
   }
 
   preload () {
@@ -12,14 +11,21 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
+    this.load.image('background', './assets/images/background.png')
   }
 
   create () {
     game.stage.backgroundColor = '#3598db'
+    this.bg = game.add.tileSprite(0, 0, 760, 400, 'background')
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
     game.world.enableBody = true
+
+    //  Text
+    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' })
+    this.stateText.anchor.setTo(0.5, 0.5)
+    this.stateText.visible = false
 
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
@@ -31,13 +37,6 @@ export default class extends Phaser.State {
     this.blocks = game.add.group()
 
     var chars = ['f', 'j', 'f', 'j', 'f', 'f', 'j', 'j']
-
-    const width = 100
-
-    for (let x = 0; x < chars.length; x++) {
-
-    }
-
     let startPositionX = 300
 
     chars.forEach(char => {
@@ -45,7 +44,7 @@ export default class extends Phaser.State {
       block.height = 50
       block.width = 50
       block.body.immovable = true
-
+      block.value = char.toUpperCase()
       let text = game.add.text(30, 20, char, {
         font: 'bold 60px Arial'
       })
@@ -68,9 +67,15 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    if (this.keys.A.isDown) {
-      this.player.body.velocity.x = 50
-      this.removeLetter(this.blocks[0])
+    this.bg.tilePosition.x -= 2
+
+    let nextBlock = this.blocks.getFirstAlive()
+    if (nextBlock) {
+      let nextLetter = nextBlock.value
+      if (this.keys[nextLetter].isDown) {
+        this.player.body.velocity.x = 50
+        this.removeLetter(nextBlock)
+      }
     }
 
     game.physics.arcade.collide(this.player, this.block)
@@ -96,6 +101,12 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
+
+    this.stateText.text = ' GAME OVER \n Click to restart'
+    this.stateText.visible = true
+
+    // the "click to restart" handler
+    game.input.onTap.addOnce(this.restart, this)
   }
 
   removeLetter (letter) {
@@ -103,7 +114,7 @@ export default class extends Phaser.State {
   }
 
   restart () {
-    game.state.start('main')
+    game.state.start('Game')
   }
 
   render () {
