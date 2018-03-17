@@ -3,7 +3,7 @@ import 'p2'
 import Phaser from 'phaser'
 
 import GameState from './states/Game'
-import GameMenu from './states/gamemenu'
+import GameMenu from './states/GameMenu'
 
 import config from './config'
 

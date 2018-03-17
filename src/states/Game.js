@@ -3,11 +3,8 @@ import Phaser from 'phaser'
 
 import chars from '../chars'
 
-let startPositionX = 300
-let aimingBlock
-let nextLetter
+let startPositionX = 600
 const blockSize = 50
-var yOffset = -70
 
 /* global game, __DEV__ */
 export default class extends Phaser.State {
@@ -22,6 +19,7 @@ export default class extends Phaser.State {
     if (localStorage.hasOwnProperty('highScore')) {
       this.highScore = localStorage.getItem('highScore')
     } else {
+      localStorage.setItem('highScore', '0')
       this.highScore = 0
     }
   }
@@ -40,7 +38,7 @@ export default class extends Phaser.State {
   create () {
     game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
-    const totalGameWidth = chars.length * blockSize + startPositionX + 200
+    const totalGameWidth = chars.length * blockSize + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -50,24 +48,24 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
+    this.stateText = game.add.text(game.world.centerX / 2, game.world.centerY / 2 + 200, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
-    this.displayScore = game.add.text(20, 40, ' ', { font: '20px Arial', align:'left', fill: 'white' })
+    this.displayScore = game.add.text(50, 50, ' ', { font: '20px Arial', fill: 'white' })
     this.displayScore.visible = false
     this.displayScore.fixedToCamera = true
     this.score = 0
 
-    this.displayHighScore = game.add.text(20, 20, ' ', { font: '20px Arial', align:'left', fill: 'white' })
+    this.displayHighScore = game.add.text(50, 100, ' ', { font: '20px Arial', fill: 'white' })
     this.displayHighScore.text = 'Highscore: ' + this.highScore
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(100, ((game.world.centerY / 2) -yOffset), 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.enemy = game.add.sprite(0, ((game.world.centerY / 2) -yOffset), 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
@@ -85,7 +83,7 @@ export default class extends Phaser.State {
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(blockpositionX, ((game.world.centerY / 2) -yOffset), 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -97,10 +95,8 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX+blockSize+10, ((game.world.centerY / 2)-yOffset), 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
-
-    aimingBlock = this.blocks.getFirstAlive()
 
     this.registerKeys()
   }
@@ -118,29 +114,22 @@ export default class extends Phaser.State {
     this.enemy.body.velocity.x = 90
     this.bg.tilePosition.x -= 1
 
-
-    if (aimingBlock) {
-      this.nextLetter = aimingBlock.value
-      if (this.keys[this.nextLetter].isDown) {
+    let nextBlock = this.blocks.getFirstAlive()
+    if (nextBlock) {
+      let nextLetter = nextBlock.value
+      if (this.keys[nextLetter].isDown) {
         this.weapon.fire()
-        this.updateAimingBlock()
       }
     }
-
+    console.log(this.blocks)
     if (this.blocks.countLiving() === 0) {
       this.win()
     }
 
-    //game.physics.arcade.collide(this.player, this.block)
+    game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
     game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
-    //game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
-  }
-
-  updateAimingBlock() {
-    let indexOfAimingBlock = this.blocks.getIndex(this.aimingBlock)
-    this.aimingBlock = this.blocks.getAt(indexOfAimingBlock+1)
-    this.targetcross.position = this.aimingBlock.position
+    game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
   win () {
@@ -172,7 +161,7 @@ export default class extends Phaser.State {
   refreshScore () {
     console.log('refreshscore')
     this.score += 1
-    this.displayScore.text = 'Score: ' + this.score
+    this.displayScore.text = ' Score: ' + this.score
     this.displayScore.visible = true
   }
 
