@@ -128,6 +128,7 @@ export default class extends Phaser.State {
   win () {
     this.showText('!YEAH!')
     this.enemy.kill()
+    this.setHighScore()
   }
 
   showText (text) {
@@ -138,12 +139,8 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
-
     this.showText('GAME OVER \n Click to restart')
-
-    if (this.score > this.highScore) {
-      localStorage.setItem('highScore', this.score)
-    }
+    this.setHighScore()
 
     game.input.onTap.addOnce(this.restart, this)
   }
@@ -159,6 +156,12 @@ export default class extends Phaser.State {
     this.score += 1
     this.displayScore.text = ' Score: ' + this.score
     this.displayScore.visible = true
+  }
+
+  setHighScore () {
+    if (this.score > this.highScore) {
+      localStorage.setItem('highScore', this.score)
+    }
   }
 
   restart () {
