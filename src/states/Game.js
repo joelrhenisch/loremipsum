@@ -104,6 +104,9 @@ export default class extends Phaser.State {
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
+
+    this.player.body.velocity.x = 100
+    this.enemy.body.velocity.x = 90
   }
 
   registerKeys () {
@@ -115,8 +118,6 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.player.body.velocity.x = 100
-    this.enemy.body.velocity.x = 90
     this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
