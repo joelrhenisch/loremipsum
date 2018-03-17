@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 
 import chars from '../chars'
+import * as firebase from 'firebase'
 
 let startPositionX = 600
 const blockSize = 50
@@ -199,7 +200,7 @@ export default class extends Phaser.State {
     this.showText('!!GAME OVER!!\nclick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
-    this.enemy.scale.setTo(1,1)
+    this.enemy.scale.setTo(1, 1)
     game.input.onTap.addOnce(this.restart, this)
   }
 
@@ -217,9 +218,18 @@ export default class extends Phaser.State {
   }
 
   setHighScore () {
+    let highScore
     if (this.score > this.highScore) {
       localStorage.setItem('highScore', this.score)
+      highScore = this.score
     }
+
+    let uname = localStorage.getItem('username')
+    firebase.database().ref('scores/' + uname).set({
+      uname: uname,
+      score: this.score,
+      highScore: highScore || null
+    })
   }
 
   restart () {
