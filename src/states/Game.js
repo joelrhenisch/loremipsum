@@ -115,7 +115,9 @@ export default class extends Phaser.State {
     }
   }
 
-  update () {
+  update() {
+    this.enemyVelocity = this.enemyVelocity + 0.1
+    this.playerVelocity = this.playerVelocity + 0.1 
     this.player.body.velocity.x = this.playerVelocity
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
