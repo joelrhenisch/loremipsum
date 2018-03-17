@@ -21,27 +21,23 @@ export default class extends Phaser.State {
 
   create () {
     game.stage.backgroundColor = '#3598db'
-    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
-
-    game.world.setBounds(0, 0, game.width * 5, game.width * 5)
-
+    game.world.enableBody = true
+    game.world.setBounds(0, 0, game.width * 5, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
-    game.world.enableBody = true
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    this.bg.fixedToCamera = true
 
-    //  Text
-    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' })
-    this.stateText.anchor.setTo(0.5, 0.5)
+    this.stateText = game.add.text(game.width / 4, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
 
-    // Create the player in the middle of the game
-    this.player = game.add.sprite(100, 100, 'player')
+    this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
-    game.camera.follow(this.player)
 
-    this.enemy = game.add.sprite(0, 100, 'enemy')
+    this.enemy = game.add.sprite(0, game.world.centerY / 2, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
+    game.camera.follow(this.player)
     this.blocks = game.add.group()
 
     const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
@@ -53,7 +49,7 @@ export default class extends Phaser.State {
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(startPositionX, 100, 'block')
+      let block = game.add.sprite(startPositionX, game.world.centerY / 2, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -78,6 +74,7 @@ export default class extends Phaser.State {
 
   update () {
     this.player.body.velocity.x = 100
+    this.enemy.body.velocity.x = 90
     this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getFirstAlive()
@@ -89,12 +86,7 @@ export default class extends Phaser.State {
     }
 
     game.physics.arcade.collide(this.player, this.block)
-    this.enemy.body.velocity.x = 90
-
-    // Make the player and the walls collide
     game.physics.arcade.collide(this.player, this.blocks)
-
-    // Call the 'restart' function when the enemy touches the player
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
@@ -103,6 +95,7 @@ export default class extends Phaser.State {
 
     this.stateText.text = ' GAME OVER \n Click to restart'
     this.stateText.visible = true
+    this.stateText.bringToTop()
 
     game.input.onTap.addOnce(this.restart, this)
   }
