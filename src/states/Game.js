@@ -13,6 +13,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.load.image('player', './assets/images/raumschiff.png')
+    this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('ground', './assets/images/ground.png')
@@ -35,6 +36,10 @@ export default class extends Phaser.State {
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
+
+    this.weapon = game.add.weapon(-1, 'bullet')
+    // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
+    this.weapon.trackSprite(this.player, 14, 0);
 
     this.enemy = game.add.sprite(0, 100, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
