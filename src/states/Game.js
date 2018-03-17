@@ -1,6 +1,8 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
+import chars from '../chars'
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -10,6 +12,12 @@ export default class extends Phaser.State {
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.refresh()
+
+    if (localStorage.hasOwnProperty('highScore')) {
+      this.highScore = localStorage.getItem('highScore')
+    } else {
+      this.highScore = 0
+    }
   }
 
   preload () {
@@ -38,6 +46,16 @@ export default class extends Phaser.State {
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
+    this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore.visible = false
+    this.displayScore.fixedToCamera = true
+    this.score = 0
+
+    this.displayHighScore = game.add.text(game.width / 4, 170, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore.text = 'Highscore: ' + this.highScore
+    this.displayHighScore.visible = true
+    this.displayHighScore.fixedToCamera = true
+
     this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
@@ -53,7 +71,6 @@ export default class extends Phaser.State {
     game.camera.follow(this.player)
     this.blocks = game.add.group()
 
-    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
     let startPositionX = 300
     const blockSize = 50
 
@@ -111,6 +128,10 @@ export default class extends Phaser.State {
     this.stateText.visible = true
     this.stateText.bringToTop()
 
+    if (this.score > this.highScore) {
+      localStorage.setItem('highScore', this.score)
+    }
+
     game.input.onTap.addOnce(this.restart, this)
   }
 
@@ -121,6 +142,13 @@ export default class extends Phaser.State {
 
   removeLetter (letter) {
     letter.kill()
+    this.refreshScore()
+  }
+
+  refreshScore () {
+    this.score += 1
+    this.displayScore.text = ' Score: ' + this.score
+    this.displayScore.visible = true
   }
 
   restart () {
@@ -129,8 +157,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      game.debug.cameraInfo(game.camera, 32, 32)
-      game.debug.spriteCoords(this.player, 32, 250)
+      //game.debug.cameraInfo(game.camera, 32, 32)
+      //game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
