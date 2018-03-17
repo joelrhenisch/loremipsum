@@ -20,6 +20,11 @@ export default class extends Phaser.State {
 
     game.world.enableBody = true
 
+    //  Text
+    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' });
+    this.stateText.anchor.setTo(0.5, 0.5);
+    this.stateText.visible = false;
+
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
@@ -95,7 +100,12 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
-    this.restart()
+
+    this.stateText.text = " GAME OVER \n Click to restart";
+    this.stateText.visible = true;
+
+    //the "click to restart" handler
+    game.input.onTap.addOnce(this.restart, this);
   }
 
   removeLetter (letter) {
