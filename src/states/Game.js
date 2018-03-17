@@ -1,8 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
-import chars from '../chars'
-
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -12,12 +10,6 @@ export default class extends Phaser.State {
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.refresh()
-
-    if (localStorage.hasOwnProperty('highScore')) {
-      this.highScore = localStorage.getItem('highScore')
-    } else {
-      this.highScore = 0
-    }
   }
 
   preload () {
@@ -26,8 +18,7 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
-
-    this.load.audio('sound', ['assets/audio/sound.mp3'])
+    this.load.image('targetcross', './assets/images/targetcross.png')
   }
 
   create () {
@@ -36,25 +27,12 @@ export default class extends Phaser.State {
     game.world.setBounds(0, 0, game.width * 5, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
-    const music = game.add.audio('sound')
-    music.play()
-
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
     this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
-
-    this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
-    this.displayScore.visible = false
-    this.displayScore.fixedToCamera = true
-    this.score = 0
-
-    this.displayHighScore = game.add.text(game.width / 4, 170, ' ', { font: '20px Arial', fill: 'white' })
-    this.displayHighScore.text = 'Highscore: ' + this.highScore
-    this.displayHighScore.visible = true
-    this.displayHighScore.fixedToCamera = true
 
     this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
@@ -65,11 +43,12 @@ export default class extends Phaser.State {
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
-    this.weapon.trackSprite(this.player, 130, 20)
+    this.weapon.trackSprite(this.player, 14, 0)
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
 
+    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
     let startPositionX = 300
     const blockSize = 50
 
@@ -111,12 +90,12 @@ export default class extends Phaser.State {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
         this.weapon.fire()
+        this.removeLetter(nextBlock)
       }
     }
 
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
-    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this);
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
@@ -127,27 +106,11 @@ export default class extends Phaser.State {
     this.stateText.visible = true
     this.stateText.bringToTop()
 
-    if (this.score > this.highScore) {
-      localStorage.setItem('highScore', this.score)
-    }
-
     game.input.onTap.addOnce(this.restart, this)
-  }
-
-  removeBlock(bullet, block) {
-    block.kill()
-    bullet.kill()
   }
 
   removeLetter (letter) {
     letter.kill()
-    this.refreshScore()
-  }
-
-  refreshScore () {
-    this.score += 1
-    this.displayScore.text = ' Score: ' + this.score
-    this.displayScore.visible = true
   }
 
   restart () {
@@ -156,8 +119,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      //game.debug.cameraInfo(game.camera, 32, 32)
-      //game.debug.spriteCoords(this.player, 32, 250)
+      game.debug.cameraInfo(game.camera, 32, 32)
+      game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
