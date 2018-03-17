@@ -151,14 +151,11 @@ export default class extends Phaser.State {
   removeBlock (bullet, block) {
     block.kill()
     bullet.kill()
-  }
-
-  removeLetter (letter) {
-    letter.kill()
     this.refreshScore()
   }
 
   refreshScore () {
+    console.log('refreshscore')
     this.score += 1
     this.displayScore.text = ' Score: ' + this.score
     this.displayScore.visible = true
