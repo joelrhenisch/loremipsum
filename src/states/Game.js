@@ -1,5 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
+
 /*global game*/
 export default class extends Phaser.State {
   init () {
@@ -15,7 +16,9 @@ export default class extends Phaser.State {
 
   create () {
     game.stage.backgroundColor = '#3598db'
-    this.bg = game.add.tileSprite(0, 0, 760, 400, 'background')
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+
+    game.world.setBounds(0, 0, game.width * 5, game.width * 5)
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -67,13 +70,12 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    this.bg.tilePosition.x -= 2
+    this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getFirstAlive()
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
-        this.player.body.velocity.x = 50
         this.removeLetter(nextBlock)
       }
     }
@@ -108,6 +110,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
+      game.debug.cameraInfo(game.camera, 32, 32)
+      game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
