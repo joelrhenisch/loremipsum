@@ -123,8 +123,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      game.debug.cameraInfo(game.camera, 32, 32)
-      game.debug.spriteCoords(this.player, 32, 250)
+      //game.debug.cameraInfo(game.camera, 32, 32)
+      //game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
