@@ -39,6 +39,7 @@ export default class extends Phaser.State {
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
+    this.load.audio('explosion', ['assets/audio/explosion.mp3'])
 
   }
 
@@ -52,11 +53,7 @@ export default class extends Phaser.State {
     const music = game.add.audio('sound')
     music.play()
     this.shootSound = game.add.audio('shoot');
-
-    //  Being mp3 files these take time to decode, so we can't play them instantly
-    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
-    //  The audio files could decode in ANY order, we can never be sure which it'll be.
-    //game.sound.setDecodedCallback([shoot], start, this);
+    this.explosionSound = game.add.audio('explosion')
 
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
@@ -189,6 +186,7 @@ export default class extends Phaser.State {
   removeBlock (bullet, block) {
     block.kill()
     bullet.kill()
+    this.explosionSound.play()
     this.refreshScore()
   }
 
