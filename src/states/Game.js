@@ -89,6 +89,7 @@ export default class extends Phaser.State {
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
+        this.weapon.fire()
         this.removeLetter(nextBlock)
       }
     }
