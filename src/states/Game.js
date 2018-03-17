@@ -14,6 +14,7 @@ export default class extends Phaser.State {
 
   preload () {
     this.load.image('player', './assets/images/raumschiff.png')
+    this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
@@ -36,6 +37,11 @@ export default class extends Phaser.State {
 
     this.enemy = game.add.sprite(0, game.world.centerY / 2, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
+
+    this.weapon = game.add.weapon(-1, 'bullet')
+    this.weapon.fireAngle = Phaser.ANGLE_RIGHT
+    // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
+    this.weapon.trackSprite(this.player, 14, 0)
 
     game.camera.follow(this.player)
     this.blocks = game.add.group()
@@ -81,6 +87,7 @@ export default class extends Phaser.State {
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
+        this.weapon.fire()
         this.removeLetter(nextBlock)
       }
     }
