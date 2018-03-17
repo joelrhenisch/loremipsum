@@ -38,8 +38,17 @@ export default class extends Phaser.State {
     }
 
     let block = game.add.sprite(300, 100, 'block')
-    block.height = 100
-    block.width = 100
+    block.height = 50
+    block.width = 50
+
+
+      block.value = 'G'
+      var text = game.add.text(30, 20, block.value, {
+          font: "bold 60px Arial"
+      })
+      block.addChild(text)
+
+
     this.ground.add(block)
     block.body.immovable = true
   }
