@@ -13,6 +13,7 @@ export default class extends Phaser.State {
   init() {
     this.indexOfAimingBlock = 0;
     this.keys = {}
+    this.previousLetter = ''
 
     // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
@@ -121,13 +122,17 @@ export default class extends Phaser.State {
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
     if (nextBlock) {
       let nextLetter = nextBlock.value
-      if (this.keys[nextLetter].isDown) {
-        if (this.indexOfAimingBlock+1 < this.blocks.length) {
+      if (this.keys[nextLetter].isDown && nextLetter != this.previousLetter) {
+        this.previousLetter = nextLetter
+        if (this.indexOfAimingBlock + 1 < this.blocks.length) {
           this.indexOfAimingBlock = this.indexOfAimingBlock + 1
           let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
           this.targetcross.position = aimingBlock.position
         }
         this.weapon.fire()
+      }
+      else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
+        this.previousLetter = ''
       }
     }
     console.log(this.blocks)
