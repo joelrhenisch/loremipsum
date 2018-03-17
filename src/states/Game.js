@@ -53,6 +53,8 @@ export default class extends Phaser.State {
     //this.load.image('background', './assets/images/background.png')
     this.load.image('targetcross', './assets/images/targetcross.png')
 
+    game.load.spritesheet('kaboom', 'assets/games/invaders/explode.png', 128, 128);
+
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
     this.load.audio('explosion', ['assets/audio/explosion.mp3'])
