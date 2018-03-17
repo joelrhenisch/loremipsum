@@ -28,28 +28,31 @@ export default class extends Phaser.State {
     this.enemy = game.add.sprite(0, 100, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
-    this.block = game.add.group()
+    this.blocks = game.add.group()
 
-    var chars = [
-      'fj fj fjfj fj'
-    ]
+    var chars = ['f', 'j', 'f', 'j', 'f', 'f', 'j', 'j']
+
     const width = 100
 
     for (let x = 0; x < chars.length; x++) {
 
     }
 
-    let block = game.add.sprite(300, 100, 'block')
-    block.height = 50
-    block.width = 50
-    block.value = 'G'
-    var text = game.add.text(30, 20, block.value, {
-      font: 'bold 60px Arial'
+    let startPositionX = 300
+
+    chars.forEach(char => {
+      let block = game.add.sprite(startPositionX, 100, 'block')
+      block.height = 50
+      block.width = 50
+      block.body.immovable = true
+
+      let text = game.add.text(30, 20, char, {
+        font: 'bold 60px Arial'
+      })
+      block.addChild(text)
+      this.blocks.add(block)
+      startPositionX += 50
     })
-    block.addChild(text)
-    this.block.add(block)
-    block.body.immovable = true
-    this.blocks.push(block)
 
     this.registerKeys()
   }
@@ -82,7 +85,7 @@ export default class extends Phaser.State {
     // }
 
     // Make the player and the walls collide
-    game.physics.arcade.collide(this.player, this.block)
+    game.physics.arcade.collide(this.player, this.blocks)
 
     // Call the 'takeCoin' function when the player takes a coin
     game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
