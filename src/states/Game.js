@@ -53,11 +53,11 @@ export default class extends Phaser.State {
     //this.load.image('background', './assets/images/background.png')
     this.load.image('targetcross', './assets/images/targetcross.png')
 
-    game.load.spritesheet('kaboom', 'assets/games/invaders/explode.png', 128, 128);
+    game.load.spritesheet('kaboom', 'assets/images/explode.png', 128, 128);
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
-    this.load.audio('explosion', ['assets/audio/explosion.mp3'])
+    this.load.audio('kaboom', ['assets/audio/explosion.mp3'])
   }
 
   create () {
@@ -114,6 +114,9 @@ export default class extends Phaser.State {
 
     game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
+    this.explosions = game.add.group()
+    this.explosions.createMultiple(30, 'kaboom')
+    this.explosions.forEach(this.setupInvader, this)
 
     var blockpositionX = startPositionX
 
@@ -123,6 +126,7 @@ export default class extends Phaser.State {
         continue
       }
       let block = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'block')
+      //let explosion = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'kaboom')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -132,6 +136,7 @@ export default class extends Phaser.State {
       })
       block.addChild(text)
       this.blocks.add(block)
+      //this.explosions.add(explosion)
     }
 
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
@@ -139,6 +144,14 @@ export default class extends Phaser.State {
 
     this.registerKeys()
   }
+
+  setupInvader(invader) {
+
+  invader.anchor.x = 0.5;
+  invader.anchor.y = 0.5;
+  invader.animations.add('kaboom');
+
+}
 
   registerKeys () {
     for (let key in Phaser.KeyCode) {
@@ -217,6 +230,11 @@ export default class extends Phaser.State {
   removeBlock (bullet, block) {
     block.kill()
     bullet.kill()
+
+    var explosion = this.explosions.getFirstExists(false);
+    explosion.reset(block.body.x, block.body.y);
+    explosion.play('kaboom', 30, false, true);
+
     this.explosionSound.play()
     this.refreshScore()
   }
