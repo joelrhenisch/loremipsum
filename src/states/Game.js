@@ -34,14 +34,13 @@ export default class extends Phaser.State {
     this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
-    this.load.image('background', './assets/images/background.png')
+    //this.load.image('background', './assets/images/background.png')
     this.load.image('targetcross', './assets/images/targetcross.png')
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
 
   create () {
-    game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
     const totalGameWidth = chars.length * blockSize + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
@@ -50,8 +49,19 @@ export default class extends Phaser.State {
     const music = game.add.audio('sound')
     music.play()
 
-    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    //image in endless loop
+    //this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+
+    //background generated as canvas!
+    var myBackgroundGradient = game.add.bitmapData(game.width, game.height);
+    var grd = myBackgroundGradient.context.createLinearGradient(0,0,0,game.height);
+    grd.addColorStop(0, "#4459FF");
+    grd.addColorStop(1, "#D244FF");
+    myBackgroundGradient.context.fillStyle = grd;
+    myBackgroundGradient.context.fillRect(0,0,game.width,game.height);
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, myBackgroundGradient);
     this.bg.fixedToCamera = true
+
 
     this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
@@ -74,7 +84,7 @@ export default class extends Phaser.State {
     this.cameraplayer.alpha = 0
 
     this.enemy = game.add.sprite(100, game.world.centerY / 2 -yOffset, 'enemy')
-    this.enemy.scale.setTo(0.2, 0.25)
+    this.enemy.scale.setTo(0.4, 0.5)
 
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
@@ -106,7 +116,7 @@ export default class extends Phaser.State {
 
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 -yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
-
+    this.drawMountain(0.5, 100, 500)
     this.registerKeys()
   }
 
@@ -120,7 +130,7 @@ export default class extends Phaser.State {
 
   update() {
     this.enemyVelocity = this.enemyVelocity + 0.1
-    this.playerVelocity = this.playerVelocity + 0.1 
+    this.playerVelocity = this.playerVelocity + 0.1
     this.player.body.velocity.x = this.playerVelocity
     this.cameraplayer.position.x = this.player.position.x +300
     this.enemy.body.velocity.x = this.enemyVelocity
@@ -203,4 +213,14 @@ export default class extends Phaser.State {
       // game.debug.spriteCoords(this.player, 32, 250)
     }
   }
+
+  drawMountain(alpha, x, y) {
+    var graphics = game.add.graphics(100, 400);
+    graphics.beginFill(0xFFFFFF);
+    graphics.alpha = alpha
+    graphics.lineTo(y, x/2);
+    graphics.lineTo(-(x/2), y);
+    graphics.endFill();
+  }
+
 }
