@@ -1,15 +1,14 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-var bg;
-
+/*global game*/
 export default class extends Phaser.State {
-  init () {
+  init() {
     this.keys = {}
 
+    // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.game.scale.refresh();
-
   }
 
   preload () {
@@ -20,19 +19,18 @@ export default class extends Phaser.State {
     this.load.image('background', './assets/images/background.png')
   }
 
-
   create () {
     game.stage.backgroundColor = '#3598db'
-    bg = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'background')
+    this.bg = game.add.tileSprite(0, 0, 760, 400, 'background')
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
     game.world.enableBody = true
 
     //  Text
-    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' });
-    this.stateText.anchor.setTo(0.5, 0.5);
-    this.stateText.visible = false;
+    this.stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', { font: '84px Arial', fill: '#fff' })
+    this.stateText.anchor.setTo(0.5, 0.5)
+    this.stateText.visible = false
 
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
@@ -41,27 +39,24 @@ export default class extends Phaser.State {
     this.enemy = game.add.sprite(0, 100, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
-    this.block = game.add.group()
+    this.blocks = game.add.group()
 
-    var chars = [
-      'fj fj fjfj fj'
-    ]
-    const width = 100
+    var chars = ['f', 'j', 'f', 'j', 'f', 'f', 'j', 'j']
+    let startPositionX = 300
 
-    for (let x = 0; x < chars.length; x++) {
-
-    }
-
-    let block = game.add.sprite(300, 100, 'block')
-    block.height = 50
-    block.width = 50
-    block.value = 'G'
-    var text = game.add.text(30, 20, block.value, {
-      font: 'bold 60px Arial'
+    chars.forEach(char => {
+      let block = game.add.sprite(startPositionX, 100, 'block')
+      block.height = 50
+      block.width = 50
+      block.body.immovable = true
+      block.value = char.toUpperCase()
+      let text = game.add.text(30, 20, char, {
+        font: 'bold 60px Arial'
+      })
+      block.addChild(text)
+      this.blocks.add(block)
+      startPositionX += 50
     })
-    block.addChild(text)
-    this.block.add(block)
-    block.body.immovable = true
 
     this.registerKeys()
   }
@@ -77,9 +72,9 @@ export default class extends Phaser.State {
   update () {
     this.player.body.velocity.x = 200
 
-    bg.tilePosition.x -= 2
+    this.bg.tilePosition.x -= 2
 
-    let nextBlock = this.block.getFirstAlive()
+    let nextBlock = this.blocks.getFirstAlive()
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
@@ -100,7 +95,7 @@ export default class extends Phaser.State {
     // }
 
     // Make the player and the walls collide
-    game.physics.arcade.collide(this.player, this.block)
+    game.physics.arcade.collide(this.player, this.blocks)
 
     // Call the 'takeCoin' function when the player takes a coin
     game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
@@ -112,11 +107,11 @@ export default class extends Phaser.State {
   killPlayer () {
     this.player.kill()
 
-    this.stateText.text = " GAME OVER \n Click to restart";
-    this.stateText.visible = true;
+    this.stateText.text = ' GAME OVER \n Click to restart'
+    this.stateText.visible = true
 
-    //the "click to restart" handler
-    game.input.onTap.addOnce(this.restart, this);
+    // the "click to restart" handler
+    game.input.onTap.addOnce(this.restart, this)
   }
 
   removeLetter (letter) {
