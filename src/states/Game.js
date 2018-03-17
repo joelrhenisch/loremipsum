@@ -71,6 +71,7 @@ export default class extends Phaser.State {
     this.explosionSound = game.add.audio('explosion')
 
     //this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+    //background canvas
     var myBackgroundGradient = game.add.bitmapData(game.width, game.height);
     var grd = myBackgroundGradient.context.createLinearGradient(0,0,0,game.height);
     grd.addColorStop(0, "#4459FF");
@@ -78,8 +79,17 @@ export default class extends Phaser.State {
     myBackgroundGradient.context.fillStyle = grd;
     myBackgroundGradient.context.fillRect(0,0,game.width,game.height);
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, myBackgroundGradient);
-
     this.bg.fixedToCamera = true
+
+    //bottomline canvas ???
+    var myBottomGradient = game.add.bitmapData(game.width, 100);
+    var grdbtm = myBottomGradient.context.createLinearGradient(0,0,0,game.height);
+    grdbtm.addColorStop(0, "#00A0FF");
+    grdbtm.addColorStop(1, "#002CFF");
+    myBottomGradient.context.fillStyle = grdbtm;
+    myBottomGradient.context.fillRect(0,game.height-100,game.width,game.height);
+    this.bottombg = game.add.tileSprite(0, game.height-100, game.width, game.height, myBottomGradient);
+    this.bottombg.fixedToCamera = true
 
     this.stateText = game.add.text(50, 80, { font: 'bold 60px Arial', fill: 'white' })
     this.stateText.visible = false
@@ -134,6 +144,13 @@ export default class extends Phaser.State {
 
     this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
+
+    var mountainOffset = 0
+    while(mountainOffset <= totalGameWidth) {
+      let randWidth = Math.floor((Math.random() * 200) + 100)
+      mountainOffset += randWidth
+      this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
+    }
 
     this.registerKeys()
   }
@@ -244,6 +261,16 @@ export default class extends Phaser.State {
     this.ended = false
     game.state.start('Game')
   }
+
+  drawMountain(alpha, triangleX, triangleY, offset) {
+    var graphics = game.add.graphics(triangleX/2+offset, game.height-triangleY);
+    graphics.beginFill(0xFFFFFF);
+    graphics.alpha = alpha
+    graphics.lineTo(triangleX, triangleY);
+    graphics.lineTo(-triangleX, triangleY);
+    graphics.endFill();
+  }
+
 
   render () {
     if (__DEV__) {
