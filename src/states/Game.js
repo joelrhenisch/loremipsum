@@ -18,6 +18,8 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
+
+    this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
 
   create () {
@@ -25,6 +27,9 @@ export default class extends Phaser.State {
     game.world.enableBody = true
     game.world.setBounds(0, 0, game.width * 5, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
+
+    const music = game.add.audio('sound')
+    music.play()
 
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
