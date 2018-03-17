@@ -19,6 +19,7 @@ export default class extends Phaser.State {
     if (localStorage.hasOwnProperty('highScore')) {
       this.highScore = localStorage.getItem('highScore')
     } else {
+      localStorage.setItem('highScore', '0')
       this.highScore = 0
     }
   }
@@ -29,6 +30,7 @@ export default class extends Phaser.State {
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
     this.load.image('background', './assets/images/background.png')
+    this.load.image('targetcross', './assets/images/targetcross.png')
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
   }
@@ -46,16 +48,16 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
+    this.stateText = game.add.text(game.world.centerX / 2, game.world.centerY / 2 + 200, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
 
-    this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore = game.add.text(50, 50, ' ', { font: '20px Arial', fill: 'white' })
     this.displayScore.visible = false
     this.displayScore.fixedToCamera = true
     this.score = 0
 
-    this.displayHighScore = game.add.text(game.width / 4, 170, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore = game.add.text(50, 100, ' ', { font: '20px Arial', fill: 'white' })
     this.displayHighScore.text = 'Highscore: ' + this.highScore
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
@@ -75,12 +77,14 @@ export default class extends Phaser.State {
     game.camera.follow(this.player)
     this.blocks = game.add.group()
 
+    var blockpositionX = startPositionX
+
     for (let i = 0; i < chars.length; i++) {
-      startPositionX += blockSize + 10
+      blockpositionX += blockSize + 10
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(startPositionX, game.world.centerY / 2, 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -91,6 +95,9 @@ export default class extends Phaser.State {
       block.addChild(text)
       this.blocks.add(block)
     }
+
+    this.targetcross = game.add.sprite(startPositionX+blockSize+10, game.world.centerY / 2, 'targetcross')
+    this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
   }
