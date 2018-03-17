@@ -12,6 +12,12 @@ export default class extends Phaser.State {
     this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.refresh()
+
+    if (localStorage.hasOwnProperty('highScore')) {
+      this.highScore = localStorage.getItem('highScore')
+    } else {
+      this.highScore = 0
+    }
   }
 
   preload () {
@@ -39,6 +45,16 @@ export default class extends Phaser.State {
     this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
     this.stateText.fixedToCamera = true
+
+    this.displayScore = game.add.text(game.width / 4, 200, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayScore.visible = false
+    this.displayScore.fixedToCamera = true
+    this.score = 0
+
+    this.displayHighScore = game.add.text(game.width / 4, 170, ' ', { font: '20px Arial', fill: 'white' })
+    this.displayHighScore.text = 'Highscore: ' + this.highScore
+    this.displayHighScore.visible = true
+    this.displayHighScore.fixedToCamera = true
 
     this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
@@ -95,12 +111,12 @@ export default class extends Phaser.State {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
         this.weapon.fire()
-        this.removeLetter(nextBlock)
       }
     }
 
     game.physics.arcade.collide(this.player, this.block)
     game.physics.arcade.collide(this.player, this.blocks)
+    game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this);
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
@@ -111,11 +127,27 @@ export default class extends Phaser.State {
     this.stateText.visible = true
     this.stateText.bringToTop()
 
+    if (this.score > this.highScore) {
+      localStorage.setItem('highScore', this.score)
+    }
+
     game.input.onTap.addOnce(this.restart, this)
+  }
+
+  removeBlock(bullet, block) {
+    block.kill()
+    bullet.kill()
   }
 
   removeLetter (letter) {
     letter.kill()
+    this.refreshScore()
+  }
+
+  refreshScore () {
+    this.score += 1
+    this.displayScore.text = ' Score: ' + this.score
+    this.displayScore.visible = true
   }
 
   restart () {
