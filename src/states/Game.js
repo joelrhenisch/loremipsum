@@ -140,8 +140,8 @@ export default class extends Phaser.State {
 
   update () {
     if (this.ended) { return }
-    this.enemyVelocity = this.enemyVelocity + 0.1
-    this.playerVelocity = this.playerVelocity + 0.1
+    this.enemyVelocity = this.enemyVelocity + 0.05
+    this.playerVelocity = this.playerVelocity + 0.05
     this.player.body.velocity.x = this.playerVelocity
     this.cameraplayer.position.x = this.player.position.x + 300
     this.enemy.body.velocity.x = this.enemyVelocity
