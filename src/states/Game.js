@@ -1,6 +1,8 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
+import chars from '../chars'
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
@@ -52,7 +54,6 @@ export default class extends Phaser.State {
     game.camera.follow(this.player)
     this.blocks = game.add.group()
 
-    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
     let startPositionX = 300
     const blockSize = 50
 
