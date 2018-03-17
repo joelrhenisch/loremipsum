@@ -23,7 +23,7 @@ export default class extends Phaser.State {
     game.world.enableBody = true
 
     // Create the player in the middle of the game
-    this.player = game.add.sprite(10, 100, 'player')
+    this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
     this.enemy = game.add.sprite(0, 100, 'enemy')
@@ -70,8 +70,12 @@ export default class extends Phaser.State {
     // Call the 'takeCoin' function when the player takes a coin
     game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
 
-    // Call the 'restart' function when the player touches the enemy
-    game.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this)
+    // Call the 'restart' function when the enemy touches the player
+    game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  killPlayer() {
+    this.player.kill()
   }
 
   // Function to kill a coin
