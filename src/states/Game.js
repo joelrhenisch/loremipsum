@@ -55,7 +55,6 @@ export default class extends Phaser.State {
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
     this.load.audio('explosion', ['assets/audio/explosion.mp3'])
-
   }
 
   create () {
@@ -67,7 +66,7 @@ export default class extends Phaser.State {
 
     const music = game.add.audio('sound')
     music.play()
-    this.shootSound = game.add.audio('shoot');
+    this.shootSound = game.add.audio('shoot')
     this.explosionSound = game.add.audio('explosion')
 
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
@@ -93,8 +92,8 @@ export default class extends Phaser.State {
     this.cameraplayer = game.add.sprite(this.player.position.x + 300, game.world.centerY / 2 - yOffset, 'cameraplayer')
     this.cameraplayer.alpha = 0
 
-    this.enemy = game.add.sprite(100, game.world.centerY / 2 - yOffset, 'enemy')
-    this.enemy.scale.setTo(0.2, 0.25)
+    this.enemy = game.add.sprite(0, game.world.centerY / 2 - yOffset, 'enemy')
+    this.enemy.scale.setTo(0.5, 0.55)
 
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
@@ -140,6 +139,7 @@ export default class extends Phaser.State {
   }
 
   update () {
+    if (this.ended) { return }
     this.enemyVelocity = this.enemyVelocity + 0.1
     this.playerVelocity = this.playerVelocity + 0.1
     this.player.body.velocity.x = this.playerVelocity
@@ -180,6 +180,7 @@ export default class extends Phaser.State {
   }
 
   win () {
+    this.ended = true
     this.showText('!!YEAH!!')
     this.enemy.kill()
     this.setHighScore()
@@ -193,10 +194,12 @@ export default class extends Phaser.State {
   }
 
   killPlayer () {
+    this.ended = true
     this.player.kill()
     this.showText('!!GAME OVER!!\nclick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
+    this.enemy.scale.setTo(1,1)
     game.input.onTap.addOnce(this.restart, this)
   }
 
