@@ -70,6 +70,9 @@ export default class extends Phaser.State {
     this.player = game.add.sprite(200, game.world.centerY / 2 -yOffset, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
+    this.cameraplayer=game.add.sprite(this.player.position.x + 300, game.world.centerY / 2 -yOffset, 'cameraplayer')
+    this.cameraplayer.alpha = 0
+
     this.enemy = game.add.sprite(100, game.world.centerY / 2 -yOffset, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
@@ -79,7 +82,7 @@ export default class extends Phaser.State {
     this.weapon.trackSprite(this.player, 130, 20)
     this.weapon.bulletSpeed = 400;
 
-    game.camera.follow(this.player)
+    game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
 
     var blockpositionX = startPositionX
@@ -117,6 +120,7 @@ export default class extends Phaser.State {
 
   update () {
     this.player.body.velocity.x = this.playerVelocity
+    this.cameraplayer.position.x = this.player.position.x +300
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
 
