@@ -1,7 +1,7 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
-/* global game */
+/* global game, __DEV__ */
 export default class extends Phaser.State {
   init () {
     this.keys = {}
@@ -29,8 +29,9 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
 
-    this.stateText = game.add.text(game.width / 4, 100, ' ', { font: '60px Arial', fill: 'red' })
+    this.stateText = game.add.text(100, 100, ' ', { font: '60px Arial', fill: 'red' })
     this.stateText.visible = false
+    this.stateText.fixedToCamera = true
 
     this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
