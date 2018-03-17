@@ -10,7 +10,6 @@ export default class extends Phaser.State {
     this.load.image('player', './assets/images/raumschiff.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
-    this.load.image('ground', './assets/images/ground.png')
     this.load.image('background', './assets/images/background.png')
   }
 
@@ -30,6 +29,7 @@ export default class extends Phaser.State {
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
+    game.camera.follow(this.player)
 
     this.enemy = game.add.sprite(0, 100, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
@@ -80,20 +80,9 @@ export default class extends Phaser.State {
 
     game.physics.arcade.collide(this.player, this.block)
     this.enemy.body.velocity.x = 100
-    // } else {
-    //   this.player.body.velocity.x = 0
-    // }
-    //
-    // // Make the player jump if he is touching the ground
-    // if (this.cursor.up.isDown && this.player.body.touching.down) {
-    //   this.player.body.velocity.y = -250
-    // }
 
     // Make the player and the walls collide
     game.physics.arcade.collide(this.player, this.blocks)
-
-    // Call the 'takeCoin' function when the player takes a coin
-    game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
 
     // Call the 'restart' function when the enemy touches the player
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
@@ -119,7 +108,6 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      // this.game.debug.spriteInfo(this.mushroom, 32, 32)
     }
   }
 }
