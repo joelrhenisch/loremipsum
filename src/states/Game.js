@@ -57,7 +57,7 @@ export default class extends Phaser.State {
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
-    this.load.audio('kaboom', ['assets/audio/explosion.mp3'])
+    this.load.audio('explosion', ['assets/audio/explosion.mp3'])
   }
 
   create () {
