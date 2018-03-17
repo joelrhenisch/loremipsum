@@ -2,8 +2,13 @@
 import Phaser from 'phaser'
 /*global game*/
 export default class extends Phaser.State {
-  init () {
+  init() {
     this.keys = {}
+
+    // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.refresh();
   }
 
   preload () {
