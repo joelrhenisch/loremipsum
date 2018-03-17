@@ -1,55 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 158.6 276.5" style="enable-background:new 0 0 158.6 276.5;" xml:space="preserve">
-<rect x="27.6" y="-141.7" style="display:none;fill:#FFFFFF;stroke:#969696;stroke-width:11.3386;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" width="107.4" height="107.4"/>
-<g>
-	<defs>
-		<rect id="SVGID_1_" x="0.3" y="-254.2" width="158.3" height="530.1"/>
-	</defs>
-	<clipPath id="SVGID_2_">
-		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
-	</clipPath>
-	<g style="clip-path:url(#SVGID_2_);">
-		<g>
-			<defs>
-				<rect id="SVGID_3_" x="-989.7" y="-0.1" width="1674.2" height="276"/>
-			</defs>
-			<clipPath id="SVGID_4_">
-				<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
-			</clipPath>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0073FF;" points="-989.7,225.7 651.4,275.9 -989.7,275.9 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0073FF;" points="-989.7,216.6 684.5,267.8 684.5,275.9 651.4,275.9 
-				-989.7,225.7 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0074FF;" points="-989.7,207.5 684.5,258.8 684.5,267.8 -989.7,216.6 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0075FF;" points="-989.7,198.4 684.5,249.7 684.5,258.8 -989.7,207.5 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0076FF;" points="-989.7,189.4 684.5,240.6 684.5,249.7 -989.7,198.4 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0077FF;" points="-989.7,180.3 684.5,231.6 684.5,240.6 -989.7,189.4 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0078FF;" points="-989.7,171.2 684.5,222.5 684.5,231.6 -989.7,180.3 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0079FF;" points="-989.7,162.2 684.5,213.4 684.5,222.5 -989.7,171.2 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007AFF;" points="-989.7,153.1 684.5,204.3 684.5,213.4 -989.7,162.2 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007BFF;" points="-989.7,144 684.5,195.3 684.5,204.3 -989.7,153.1 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007CFF;" points="-989.7,135 684.5,186.2 684.5,195.3 -989.7,144 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007DFF;" points="-989.7,125.9 684.5,177.1 684.5,186.2 -989.7,135 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007EFF;" points="-989.7,116.8 684.5,168.1 684.5,177.1 -989.7,125.9 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#007FFF;" points="-989.7,107.7 684.5,159 684.5,168.1 -989.7,116.8 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0081FF;" points="-989.7,98.7 684.5,149.9 684.5,159 -989.7,107.7 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0082FF;" points="-989.7,89.6 684.5,140.8 684.5,149.9 -989.7,98.7 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0083FF;" points="-989.7,80.5 684.5,131.8 684.5,140.8 -989.7,89.6 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0084FF;" points="-989.7,71.5 684.5,122.7 684.5,131.8 -989.7,80.5 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0085FF;" points="-989.7,62.4 684.5,113.6 684.5,122.7 -989.7,71.5 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0086FF;" points="-989.7,53.3 684.5,104.6 684.5,113.6 -989.7,62.4 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0087FF;" points="-989.7,44.2 684.5,95.5 684.5,104.6 -989.7,53.3 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0088FF;" points="-989.7,35.2 684.5,86.4 684.5,95.5 -989.7,44.2 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#0089FF;" points="-989.7,26.1 684.5,77.3 684.5,86.4 -989.7,35.2 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008AFF;" points="-989.7,17 684.5,68.3 684.5,77.3 -989.7,26.1 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008BFF;" points="-989.7,8 684.5,59.2 684.5,68.3 -989.7,17 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008CFF;" points="-956.5,-0.1 684.5,50.1 684.5,59.2 -989.7,8 -989.7,-0.1 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008DFF;" points="-660.1,-0.1 684.5,41.1 684.5,50.1 -956.5,-0.1 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008EFF;" points="-363.8,-0.1 684.5,32 684.5,41.1 -660.1,-0.1 			"/>
-			<polygon style="clip-path:url(#SVGID_4_);fill:#008EFF;" points="684.5,32 -363.8,-0.1 684.5,-0.1 			"/>
-		</g>
-	</g>
-</g>
+<svg height="300px" width="200px">
+ <defs>
+   <linearGradient id="gradBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+     <stop offset="0%" style="stop-color:rgb(0,115,255);stop-opacity:1" />
+     <stop offset="100%" style="stop-color:rgb(0,142,255);stop-opacity:1" />
+   </linearGradient>
+ </defs>
+ <rect width="200" height="300" fill="url(#gradBlue)" />
 </svg>
