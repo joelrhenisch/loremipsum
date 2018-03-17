@@ -53,6 +53,8 @@ export default class extends Phaser.State {
     this.load.image('targetcross', './assets/images/targetcross.png')
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
+    this.load.audio('shoot', ['assets/audio/blaster.mp3'])
+
   }
 
   create () {
@@ -64,6 +66,12 @@ export default class extends Phaser.State {
 
     const music = game.add.audio('sound')
     music.play()
+    this.shootSound = game.add.audio('shoot');
+
+    //  Being mp3 files these take time to decode, so we can't play them instantly
+    //  Using setDecodedCallback we can be notified when they're ALL ready for use.
+    //  The audio files could decode in ANY order, we can never be sure which it'll be.
+    //game.sound.setDecodedCallback([shoot], start, this);
 
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
     this.bg.fixedToCamera = true
@@ -152,8 +160,8 @@ export default class extends Phaser.State {
           this.indexOfAimingBlock = this.indexOfAimingBlock + 1
           let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
           this.targetcross.position = aimingBlock.position
+          this.shoot()
         }
-        this.weapon.fire()
       } else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
         this.previousLetter = ''
       }
@@ -167,6 +175,11 @@ export default class extends Phaser.State {
     game.physics.arcade.collide(this.player, this.blocks)
     game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  shoot () {
+    this.weapon.fire()
+    this.shootSound.play()
   }
 
   win () {
