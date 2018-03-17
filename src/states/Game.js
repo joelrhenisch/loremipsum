@@ -1,5 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
+
 /* global game */
 export default class extends Phaser.State {
   init () {
@@ -16,13 +17,14 @@ export default class extends Phaser.State {
     this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
-    this.load.image('ground', './assets/images/ground.png')
     this.load.image('background', './assets/images/background.png')
   }
 
   create () {
     game.stage.backgroundColor = '#3598db'
-    this.bg = game.add.tileSprite(0, 0, 760, 400, 'background')
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
+
+    game.world.setBounds(0, 0, game.width * 5, game.width * 5)
 
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -36,6 +38,7 @@ export default class extends Phaser.State {
     // Create the player in the middle of the game
     this.player = game.add.sprite(100, 100, 'player')
     this.player.scale.setTo(0.4, 0.5)
+    game.camera.follow(this.player)
 
     this.weapon = game.add.weapon(-1, 'bullet')
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
@@ -46,14 +49,18 @@ export default class extends Phaser.State {
 
     this.blocks = game.add.group()
 
-    var chars = 'fjfjffjfjfgh'
-
+    const chars = 'fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh fjfjffjfjfgh'
     let startPositionX = 300
+    const blockSize = 50
 
-    for (var i = 0; i < chars.length; i++) {
+    for (let i = 0; i < chars.length; i++) {
+      startPositionX += blockSize + 10
+      if (chars[i] === ' ') {
+        continue
+      }
       let block = game.add.sprite(startPositionX, 100, 'block')
-      block.height = 50
-      block.width = 50
+      block.height = blockSize
+      block.width = blockSize
       block.body.immovable = true
       block.value = chars.charAt(i).toUpperCase()
       let text = game.add.text(30, 20, chars.charAt(i), {
@@ -61,7 +68,6 @@ export default class extends Phaser.State {
       })
       block.addChild(text)
       this.blocks.add(block)
-      startPositionX += 50
     }
 
     this.registerKeys()
@@ -76,35 +82,22 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.player.body.velocity.x = 200
-
-    this.bg.tilePosition.x -= 2
+    this.player.body.velocity.x = 100
+    this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getFirstAlive()
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
-        this.player.body.velocity.x = 50
         this.removeLetter(nextBlock)
       }
     }
 
     game.physics.arcade.collide(this.player, this.block)
-    this.enemy.body.velocity.x = 100
-    // } else {
-    //   this.player.body.velocity.x = 0
-    // }
-    //
-    // // Make the player jump if he is touching the ground
-    // if (this.cursor.up.isDown && this.player.body.touching.down) {
-    //   this.player.body.velocity.y = -250
-    // }
+    this.enemy.body.velocity.x = 90
 
     // Make the player and the walls collide
     game.physics.arcade.collide(this.player, this.blocks)
-
-    // Call the 'takeCoin' function when the player takes a coin
-    game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this)
 
     // Call the 'restart' function when the enemy touches the player
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
@@ -116,7 +109,6 @@ export default class extends Phaser.State {
     this.stateText.text = ' GAME OVER \n Click to restart'
     this.stateText.visible = true
 
-    // the "click to restart" handler
     game.input.onTap.addOnce(this.restart, this)
   }
 
@@ -130,7 +122,8 @@ export default class extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      // this.game.debug.spriteInfo(this.mushroom, 32, 32)
+      game.debug.cameraInfo(game.camera, 32, 32)
+      game.debug.spriteCoords(this.player, 32, 250)
     }
   }
 }
