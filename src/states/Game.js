@@ -1,6 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-
+/*global game*/
 export default class extends Phaser.State {
   init () {
     this.keys = {}
