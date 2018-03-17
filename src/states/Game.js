@@ -9,8 +9,8 @@ var yOffset = -100
 
 /* global game, __DEV__ */
 export default class extends Phaser.State {
-  init() {
-    this.indexOfAimingBlock = 0;
+  init () {
+    this.indexOfAimingBlock = 0
     this.keys = {}
     this.previousLetter = ''
     this.enemyVelocity = 90
@@ -67,20 +67,20 @@ export default class extends Phaser.State {
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(200, game.world.centerY / 2 -yOffset, 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2 - yOffset, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.cameraplayer=game.add.sprite(this.player.position.x + 300, game.world.centerY / 2 -yOffset, 'cameraplayer')
+    this.cameraplayer = game.add.sprite(this.player.position.x + 300, game.world.centerY / 2 - yOffset, 'cameraplayer')
     this.cameraplayer.alpha = 0
 
-    this.enemy = game.add.sprite(100, game.world.centerY / 2 -yOffset, 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2 - yOffset, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
     this.weapon.trackSprite(this.player, 130, 20)
-    this.weapon.bulletSpeed = 400;
+    this.weapon.bulletSpeed = 400
 
     game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
@@ -92,7 +92,7 @@ export default class extends Phaser.State {
       if (chars[i] === ' ') {
         continue
       }
-      let block = game.add.sprite(blockpositionX, game.world.centerY / 2 -yOffset, 'block')
+      let block = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'block')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -104,7 +104,7 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 -yOffset, 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2 - yOffset, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
@@ -118,11 +118,11 @@ export default class extends Phaser.State {
     }
   }
 
-  update() {
+  update () {
     this.enemyVelocity = this.enemyVelocity + 0.1
-    this.playerVelocity = this.playerVelocity + 0.1 
+    this.playerVelocity = this.playerVelocity + 0.1
     this.player.body.velocity.x = this.playerVelocity
-    this.cameraplayer.position.x = this.player.position.x +300
+    this.cameraplayer.position.x = this.player.position.x + 300
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
 
@@ -137,8 +137,7 @@ export default class extends Phaser.State {
           this.targetcross.position = aimingBlock.position
         }
         this.weapon.fire()
-      }
-      else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
+      } else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
         this.previousLetter = ''
       }
     }
@@ -154,7 +153,7 @@ export default class extends Phaser.State {
   }
 
   win () {
-    this.showText("YEAH!")
+    this.showText('YEAH!')
     this.enemy.kill()
     this.setHighScore()
     this.targetcross.kill()
