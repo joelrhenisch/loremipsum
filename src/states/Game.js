@@ -1,10 +1,15 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
-/*global game*/
+/* global game */
 export default class extends Phaser.State {
   init () {
     this.keys = {}
+
+    // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
+    this.game.scale.refresh()
   }
 
   preload () {
@@ -39,22 +44,23 @@ export default class extends Phaser.State {
 
     this.blocks = game.add.group()
 
-    var chars = ['f', 'j', 'f', 'j', 'f', 'f', 'j', 'j']
+    var chars = 'fjfjffjfjfgh'
+
     let startPositionX = 300
 
-    chars.forEach(char => {
+    for (var i = 0; i < chars.length; i++) {
       let block = game.add.sprite(startPositionX, 100, 'block')
       block.height = 50
       block.width = 50
       block.body.immovable = true
-      block.value = char.toUpperCase()
-      let text = game.add.text(30, 20, char, {
+      block.value = chars.charAt(i).toUpperCase()
+      let text = game.add.text(30, 20, chars.charAt(i), {
         font: 'bold 60px Arial'
       })
       block.addChild(text)
       this.blocks.add(block)
       startPositionX += 50
-    })
+    }
 
     this.registerKeys()
   }
