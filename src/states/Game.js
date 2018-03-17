@@ -47,11 +47,12 @@ export default class extends Phaser.State {
     var chars = 'fjfjffjfjfgh'
 
     let startPositionX = 300
+    const blockSize = 50
 
     for (var i = 0; i < chars.length; i++) {
       let block = game.add.sprite(startPositionX, 100, 'block')
-      block.height = 50
-      block.width = 50
+      block.height = blockSize
+      block.width = blockSize
       block.body.immovable = true
       block.value = chars.charAt(i).toUpperCase()
       let text = game.add.text(30, 20, chars.charAt(i), {
@@ -59,7 +60,7 @@ export default class extends Phaser.State {
       })
       block.addChild(text)
       this.blocks.add(block)
-      startPositionX += 50
+      startPositionX += blockSize + 10
     }
 
     this.registerKeys()
@@ -74,8 +75,7 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.player.body.velocity.x = 200
-
+    this.player.body.velocity.x = 100
     this.bg.tilePosition.x -= 1
 
     let nextBlock = this.blocks.getFirstAlive()
@@ -87,7 +87,7 @@ export default class extends Phaser.State {
     }
 
     game.physics.arcade.collide(this.player, this.block)
-    this.enemy.body.velocity.x = 100
+    this.enemy.body.velocity.x = 90
 
     // Make the player and the walls collide
     game.physics.arcade.collide(this.player, this.blocks)
@@ -102,7 +102,6 @@ export default class extends Phaser.State {
     this.stateText.text = ' GAME OVER \n Click to restart'
     this.stateText.visible = true
 
-    // the "click to restart" handler
     game.input.onTap.addOnce(this.restart, this)
   }
 
