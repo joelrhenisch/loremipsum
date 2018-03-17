@@ -233,6 +233,7 @@ export default class extends Phaser.State {
   }
 
   restart () {
+    this.ended = false
     game.state.start('Game')
   }
 
