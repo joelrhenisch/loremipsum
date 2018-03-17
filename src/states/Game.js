@@ -95,6 +95,7 @@ export default class extends Phaser.State {
 
   killPlayer () {
     this.player.kill()
+    this.restart()
   }
 
   removeLetter (letter) {
@@ -102,7 +103,7 @@ export default class extends Phaser.State {
   }
 
   restart () {
-    game.state.start('main')
+    game.state.start('Game')
   }
 
   render () {
