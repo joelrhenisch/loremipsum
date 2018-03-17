@@ -180,7 +180,6 @@ export default class extends Phaser.State {
   }
 
   refreshScore () {
-    console.log('refreshscore')
     this.score += 1
     this.displayScore.text = 'Score: ' + this.score
     this.displayScore.visible = true
