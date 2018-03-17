@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 
 import chars from '../chars'
 
-let startPositionX = 300
+let startPositionX = 600
 const blockSize = 50
 
 
@@ -40,7 +40,7 @@ export default class extends Phaser.State {
   create () {
     game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
-    const totalGameWidth = chars.length * blockSize + startPositionX + 200
+    const totalGameWidth = chars.length * blockSize + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
@@ -64,10 +64,10 @@ export default class extends Phaser.State {
     this.displayHighScore.visible = true
     this.displayHighScore.fixedToCamera = true
 
-    this.player = game.add.sprite(100, game.world.centerY / 2, 'player')
+    this.player = game.add.sprite(200, game.world.centerY / 2, 'player')
     this.player.scale.setTo(0.4, 0.5)
 
-    this.enemy = game.add.sprite(0, game.world.centerY / 2, 'enemy')
+    this.enemy = game.add.sprite(100, game.world.centerY / 2, 'enemy')
     this.enemy.scale.setTo(0.2, 0.25)
 
     this.weapon = game.add.weapon(-1, 'bullet')
@@ -98,7 +98,7 @@ export default class extends Phaser.State {
       this.blocks.add(block)
     }
 
-    this.targetcross = game.add.sprite(startPositionX+blockSize+10, game.world.centerY / 2, 'targetcross')
+    this.targetcross = game.add.sprite(startPositionX + blockSize + 10, game.world.centerY / 2, 'targetcross')
     this.targetcross.scale.setTo(0.5, 0.5)
 
     this.registerKeys()
@@ -127,7 +127,7 @@ export default class extends Phaser.State {
         this.weapon.fire()
       }
     }
-
+    console.log(this.blocks)
     if (this.blocks.countLiving() === 0) {
       this.win()
     }
