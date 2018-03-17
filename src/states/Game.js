@@ -6,9 +6,11 @@ import chars from '../chars'
 let startPositionX = 300
 const blockSize = 50
 
+
 /* global game, __DEV__ */
 export default class extends Phaser.State {
-  init () {
+  init() {
+    this.indexOfAimingBlock = 0;
     this.keys = {}
 
     // scale to fullscreen: is this the right place to do this? from: http://www.html5gamedevs.com/topic/21531-scale-to-any-screen-size-the-best-solution/
@@ -115,10 +117,13 @@ export default class extends Phaser.State {
     this.enemy.body.velocity.x = 90
     this.bg.tilePosition.x -= 1
 
-    let nextBlock = this.blocks.getFirstAlive()
+    let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
     if (nextBlock) {
       let nextLetter = nextBlock.value
       if (this.keys[nextLetter].isDown) {
+        this.indexOfAimingBlock = this.indexOfAimingBlock + 1
+        let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
+        this.targetcross.position = aimingBlock.position
         this.weapon.fire()
       }
     }
@@ -154,8 +159,14 @@ export default class extends Phaser.State {
   }
 
   removeBlock (bullet, block) {
+    //let indexOfAimingBlock = this.blocks.getIndex(block)
+    //let aimingBlock = this.blocks.getAt(indexOfAimingBlock + 1)
+    //this.targetcross.position = aimingBlock.position
+
     block.kill()
     bullet.kill()
+
+
     this.refreshScore()
   }
 
