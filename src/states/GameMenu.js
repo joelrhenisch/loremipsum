@@ -24,6 +24,14 @@ export default class extends Phaser.State {
       align: 'center'
     })
     titleText.anchor.set(0.5)
+
+    let stored = localStorage.getItem('username') !== 'null' ? localStorage.getItem('username') : ''
+    let uname = window.prompt('username', stored)
+    localStorage.setItem('username', uname)
+
+    game.input.onTap.addOnce(() => {
+      game.state.start('Game')
+    }, this)
   }
 
   addMenuOption (text, callback) {
