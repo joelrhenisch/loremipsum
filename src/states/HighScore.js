@@ -1,9 +1,12 @@
+
+
 /* globals __DEV__, game */
 import Phaser from 'phaser'
 
 export default class extends Phaser.State {
   init () {
     this.optionCount = 1
+    this.list = 1
   }
 
   preload () {
@@ -14,32 +17,37 @@ export default class extends Phaser.State {
     game.stage.disableVisibilityChange = true
     game.add.tileSprite(0, 0, game.width, game.height, 'background')
 
-    this.addMenuOption('[Start]', function () {
-      game.state.start('Game')
-    })
-
-    this.addMenuOption('[Highscore]', function () {
-      game.state.start('HighScore')
-    })
-
-    const titleText = game.add.text(game.world.centerX, 100, 'Lorem Ipsum', {
+    const highscoreText = game.add.text(game.world.centerX, 50, 'HighScore', {
       font: 'bold 50px Arial',
       fill: '#FFFFFF',
       align: 'center'
     })
-    titleText.anchor.set(0.5)
+    highscoreText.anchor.set(0.5)
 
-    let stored = localStorage.getItem('username') !== 'null' ? localStorage.getItem('username') : ''
-    let uname = window.prompt('username', stored)
-    localStorage.setItem('username', uname)
+    this.addMenuOption('[Back to Menu]', function () {
+      game.state.start('GameMenu')
+    })
 
-    game.input.onTap.addOnce(() => {
-      game.state.start('Game')
-    }, this)
+    for(var i = 0; i < 5; i++){
+          this.addHighScore('Test')
+    }
+
+
+
+
+  }
+
+  addHighScore (text) {
+    var txt = game.add.text(game.world.centerX, ((this.optionCount + this.list) * 40) + 40, text, {
+      fill: '#FFFFFF',
+      align: 'center'
+    })
+    txt.anchor.setTo(0.5)
+    this.list++
   }
 
   addMenuOption (text, callback) {
-    const txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 100, text, {
+    const txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 30, text, {
       fill: '#FFFFFF',
       align: 'center'
     })

@@ -4,6 +4,7 @@ import Phaser from 'phaser'
 
 import GameState from './states/Game'
 import GameMenu from './states/GameMenu'
+import HighScore from './states/HighScore'
 import * as firebase from 'firebase'
 
 import config from './config'
@@ -18,6 +19,7 @@ class Game extends Phaser.Game {
 
     this.state.add('GameMenu', GameMenu, false)
     this.state.add('Game', GameState, false)
+    this.state.add('HighScore', HighScore, false)
 
     var fconf = {
       apiKey: 'AIzaSyDgO1RDaI_eGfUZ1eyI1Xm2NfvW8EBRIIw',
