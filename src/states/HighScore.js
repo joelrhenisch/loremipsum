@@ -1,5 +1,4 @@
 
-
 /* globals __DEV__, game */
 import Phaser from 'phaser'
 import * as firebase from 'firebase'
@@ -28,15 +27,14 @@ export default class extends Phaser.State {
     this.addMenuOption('[Back to Menu]', function () {
       game.state.start('GameMenu')
     })
-
-    var topUserPostsRef = firebase.database().ref('scores').orderByChild('highScore');
-    topUserPostsRef.on('value', (snapshot) => {
-
-      for(let name of Object.keys(snapshot.val())){this.addHighScore(name + " : "+snapshot.val()[name].highScore)}
+    this.scoreData = []
+    const scores = firebase.database().ref('scores').orderByChild('score').limitToLast(10)
+    scores.on('child_added', (snapshot) => {
+      this.scoreData.push([snapshot.key, snapshot.val().score])
     })
-
-
-
+    scores.on('value', (snapshot) => {
+      this.scoreData.reverse().forEach(d => this.addHighScore(d[0] + ' : ' + d[1]))
+    })
   }
 
   addHighScore (text) {

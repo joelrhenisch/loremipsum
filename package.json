@@ -12,6 +12,7 @@
     },
     "license": "MIT",
     "devDependencies": {
+        "@orange-games/phaser-input": "^2.0.5",
         "babel-core": "^6.26.0",
         "babel-eslint": "^8.2.1",
         "babel-loader": "^7.1.2",
@@ -28,6 +29,7 @@
         "eslint-plugin-node": "^6.0.0",
         "eslint-plugin-promise": "^3.6.0",
         "eslint-plugin-standard": "^3.0.1",
+        "exports-loader": "^0.7.0",
         "expose-loader": "^0.7.4",
         "firebase": "^4.11.0",
         "html-webpack-plugin": "^2.30.1",

@@ -1,9 +1,11 @@
 /* globals __DEV__, game */
 import Phaser from 'phaser'
+import PhaserInput from 'phaser-input'
 
 export default class extends Phaser.State {
   init () {
     this.optionCount = 1
+    game.add.plugin(PhaserInput.Plugin)
   }
 
   preload () {
@@ -15,7 +17,10 @@ export default class extends Phaser.State {
     game.add.tileSprite(0, 0, game.width, game.height, 'background')
 
     this.addMenuOption('[Start]', function () {
-      game.state.start('Game')
+      if (this.input.value.trim() !== '') {
+        localStorage.setItem('username', this.input.value.trim())
+        game.state.start('Game')
+      }
     })
 
     this.addMenuOption('[Highscore]', function () {
@@ -29,17 +34,30 @@ export default class extends Phaser.State {
     })
     titleText.anchor.set(0.5)
 
-    let stored = localStorage.getItem('username') !== 'null' ? localStorage.getItem('username') : ''
-    let uname = window.prompt('username', stored)
-    localStorage.setItem('username', uname)
+    this.input = game.add.inputField(game.world.centerX - 140 / 2, 140, {
+      font: '20px Arial',
+      fontWeight: 'bold',
+      fill: '#fff',
+      fillAlpha: 0.3,
+      width: 140,
+      height: 25,
+      padding: 8,
+      borderWidth: 1,
+      borderColor: '#fff',
+      borderRadius: 3,
+      placeHolder: 'username',
+      type: PhaserInput.InputType.text
+    })
+    this.input.bringToTop()
 
-    game.input.onTap.addOnce(() => {
-      game.state.start('Game')
-    }, this)
+    let stored = localStorage.getItem('username') !== 'null' ? localStorage.getItem('username') : ''
+    if (stored) {
+      this.input.setText(stored)
+    }
   }
 
   addMenuOption (text, callback) {
-    const txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 100, text, {
+    const txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 140, text, {
       fill: '#FFFFFF',
       align: 'center'
     })

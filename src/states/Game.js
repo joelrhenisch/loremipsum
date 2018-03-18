@@ -37,12 +37,16 @@ export default class extends Phaser.State {
     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.game.scale.refresh()
 
-    if (localStorage.hasOwnProperty('highScore')) {
-      this.highScore = localStorage.getItem('highScore')
-    } else {
-      localStorage.setItem('highScore', '0')
-      this.highScore = 0
-    }
+    this.highScore = 0
+
+    const scores = firebase.database().ref('scores').child(localStorage.getItem('username'))
+    scores.once('value', (snapshot) => {
+      const obj = snapshot.val()
+      this.highScore = obj.score
+      if (this.displayHighScore) {
+        this.displayHighScore.text = 'Highscore: ' + this.highScore
+      }
+    })
   }
 
   preload () {
@@ -194,9 +198,9 @@ export default class extends Phaser.State {
         if (this.indexOfAimingBlock + 1 < this.blocks.length) {
           this.indexOfAimingBlock = this.indexOfAimingBlock + 1
         }
-          let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
-          this.targetcross.position = aimingBlock.position
-          this.shoot()
+        let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
+        this.targetcross.position = aimingBlock.position
+        this.shoot()
       } else if (this.previousLetter !== '' && !this.keys[this.previousLetter].isDown) {
         this.previousLetter = ''
       }
@@ -267,12 +271,6 @@ export default class extends Phaser.State {
     let uname = localStorage.getItem('username')
     if (this.score > this.highScore) {
       localStorage.setItem('highScore', this.score)
-      firebase.database().ref('scores/' + uname).update({
-        uname: uname,
-        score: this.score,
-        highScore: this.score
-      })
-    } else {
       firebase.database().ref('scores/' + uname).update({
         uname: uname,
         score: this.score
