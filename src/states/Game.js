@@ -240,6 +240,7 @@ export default class extends Phaser.State {
     this.ended = true
     this.player.kill()
     this.blocks.kill()
+    this.targetcross.kill()
     this.showText('!!GAME OVER!!\nclick to restart')
     this.setHighScore()
     this.enemyVelocity = 0
