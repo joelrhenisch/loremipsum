@@ -265,17 +265,17 @@ export default class extends Phaser.State {
     let uname = localStorage.getItem('username')
     if (this.score > this.highScore) {
       localStorage.setItem('highScore', this.score)
-      firebase.database().ref('scores/' + uname).set({
+      firebase.database().ref('scores/' + uname).update({
         uname: uname,
         score: this.score,
         highScore: this.score
       })
+    } else {
+      firebase.database().ref('scores/' + uname).update({
+        uname: uname,
+        score: this.score
+      })
     }
-
-    firebase.database().ref('scores/' + uname).set({
-      uname: uname,
-      score: this.score
-    })
   }
 
   restart () {
