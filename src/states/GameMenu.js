@@ -48,7 +48,6 @@ export default class extends Phaser.State {
       placeHolder: 'username',
       type: PhaserInput.InputType.text
     })
-    this.input.bringToTop()
 
     let stored = localStorage.getItem('username') !== 'null' ? localStorage.getItem('username') : ''
     if (stored) {

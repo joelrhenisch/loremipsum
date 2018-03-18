@@ -76,8 +76,8 @@ export default class extends Phaser.State {
     this.explosionSound = game.add.audio('explosion')
 
     // background canvas
-    var backgroundGradient = game.add.bitmapData(game.width, game.height)
-    var grd = backgroundGradient.context.createLinearGradient(0, 0, 0, game.height)
+    const backgroundGradient = game.add.bitmapData(game.width, game.height)
+    const grd = backgroundGradient.context.createLinearGradient(0, 0, 0, game.height)
     grd.addColorStop(0, '#4459FF')
     grd.addColorStop(1, '#D244FF')
     backgroundGradient.context.fillStyle = grd
@@ -85,8 +85,8 @@ export default class extends Phaser.State {
     this.bg = game.add.tileSprite(0, 0, game.width, game.height, backgroundGradient)
     this.bg.fixedToCamera = true
 
-    var bottomGradient = game.add.bitmapData(game.width, 100)
-    var grdbtm = bottomGradient.context.createLinearGradient(0, 0, 0, game.height)
+    const bottomGradient = game.add.bitmapData(game.width, 100)
+    const grdbtm = bottomGradient.context.createLinearGradient(0, 0, 0, game.height)
     grdbtm.addColorStop(0, '#00A0FF')
     grdbtm.addColorStop(1, '#002CFF')
     bottomGradient.context.fillStyle = grdbtm
@@ -95,7 +95,7 @@ export default class extends Phaser.State {
     this.bottombg.fixedToCamera = true
 
     this.drawMountain(0.5, Math.floor((Math.random() * 200) + 100), Math.floor((Math.random() * 400) + 100), 0)
-    var mountainOffset = 0
+    let mountainOffset = 0
     while (mountainOffset <= totalGameWidth) {
       let randWidth = Math.floor((Math.random() * 200) + 100)
       mountainOffset += randWidth
