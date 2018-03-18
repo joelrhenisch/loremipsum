@@ -128,7 +128,7 @@ export default class extends Phaser.State {
 
     this.weapon = game.add.weapon(-1, 'bullet')
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
-    // Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
+    // Tell the Weapon to track the 'player' Sprite
     this.weapon.trackSprite(this.player, 130, 20)
     this.weapon.bulletSpeed = 400
 
@@ -198,10 +198,11 @@ export default class extends Phaser.State {
         this.previousLetter = nextLetter
         if (this.indexOfAimingBlock + 1 < this.blocks.length) {
           this.indexOfAimingBlock = this.indexOfAimingBlock + 1
+        }
           let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
           this.targetcross.position = aimingBlock.position
           this.shoot()
-        }
+        
       } else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
         this.previousLetter = ''
       }
