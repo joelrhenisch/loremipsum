@@ -27,6 +27,7 @@ export default class extends Phaser.State {
     this.addMenuOption('[Back to Menu]', function () {
       game.state.start('GameMenu')
     })
+
     this.scoreData = []
     const scores = firebase.database().ref('scores').orderByChild('score').limitToLast(10)
     scores.on('child_added', (snapshot) => {
