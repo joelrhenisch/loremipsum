@@ -240,6 +240,8 @@ export default class extends Phaser.State {
     this.setHighScore()
     this.enemyVelocity = 0
     this.enemy.scale.setTo(1, 1)
+    game.add.tween(this.enemy.scale).to({ x: 2, y: 2 }, 1000, Phaser.Easing.Linear.None, true)
+    game.add.tween(this.enemy).to({ angle: -45 }, 2000, Phaser.Easing.Linear.None, true)
     game.input.onTap.addOnce(this.restart, this)
   }
 
