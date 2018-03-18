@@ -1,9 +1,8 @@
 {
-    "name": "PhaserES6Webpack",
-    "version": "1.2.1",
+    "name": "loremipsum-typewriter",
+    "version": "1.0.0",
     "description": "",
-    "author": "leandro cabrera <leandcabrera@gmail.com>",
-    "main": "index.js",
+    "author": "Ueli Kunz <kunz@ideadapt.net>",
     "scripts": {
         "dev": "webpack",
         "deploy": "webpack --config webpack.production.config.js",
@@ -44,15 +43,5 @@
         "node-static": "^0.7.10",
         "phaser-ce": "^2.10.0",
         "webfontloader": "^1.6.28"
-    },
-    "cordova": {
-        "platforms": [
-            "android",
-            "browser",
-            "ios"
-        ],
-        "plugins": {
-            "cordova-plugin-whitelist": {}
-        }
     }
 }
