@@ -127,7 +127,7 @@ export default class extends Phaser.State {
     this.weapon.fireAngle = Phaser.ANGLE_RIGHT
     // Tell the Weapon to track the 'player' Sprite
     this.weapon.trackSprite(this.player, 130, 20)
-    this.weapon.bulletSpeed = 400
+    this.weapon.bulletSpeed = 1000
 
     game.camera.follow(this.cameraplayer, game.camera.lerpX = 0.4)
     this.blocks = game.add.group()
