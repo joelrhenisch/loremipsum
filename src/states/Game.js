@@ -6,9 +6,9 @@ import * as firebase from 'firebase'
 
 let startPositionX = 600
 const blockSize = 50
-var yOffset = -100
+const yOffset = -100
 
-let it = {
+let charToWord = {
   '1': 'ONE',
   '2': 'TWO',
   '3': 'THREE',
@@ -50,10 +50,9 @@ export default class extends Phaser.State {
     this.load.image('bullet', './assets/images/fireball.png')
     this.load.image('enemy', './assets/images/monster.png')
     this.load.image('block', './assets/images/klotz.png')
-    //this.load.image('background', './assets/images/background.png')
     this.load.image('targetcross', './assets/images/targetcross.png')
 
-    game.load.spritesheet('kaboom', 'assets/images/explode.png', 128, 128);
+    game.load.spritesheet('kaboom', 'assets/images/explode.png', 128, 128)
 
     this.load.audio('sound', ['assets/audio/sound.mp3'])
     this.load.audio('shoot', ['assets/audio/blaster.mp3'])
@@ -61,7 +60,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    //game.stage.backgroundColor = '#3598db'
+    // game.stage.backgroundColor = '#3598db'
     game.world.enableBody = true
     const totalGameWidth = chars.length * (blockSize + 10) + startPositionX + 600
     game.world.setBounds(0, 0, totalGameWidth, game.height)
@@ -72,35 +71,33 @@ export default class extends Phaser.State {
     this.shootSound = game.add.audio('shoot')
     this.explosionSound = game.add.audio('explosion')
 
-    //this.bg = game.add.tileSprite(0, 0, game.width, game.height, 'background')
-    //background canvas
-    var myBackgroundGradient = game.add.bitmapData(game.width, game.height);
-    var grd = myBackgroundGradient.context.createLinearGradient(0,0,0,game.height);
-    grd.addColorStop(0, "#4459FF");
-    grd.addColorStop(1, "#D244FF");
-    myBackgroundGradient.context.fillStyle = grd;
-    myBackgroundGradient.context.fillRect(0,0,game.width,game.height);
-    this.bg = game.add.tileSprite(0, 0, game.width, game.height, myBackgroundGradient);
+    // background canvas
+    var backgroundGradient = game.add.bitmapData(game.width, game.height)
+    var grd = backgroundGradient.context.createLinearGradient(0, 0, 0, game.height)
+    grd.addColorStop(0, '#4459FF')
+    grd.addColorStop(1, '#D244FF')
+    backgroundGradient.context.fillStyle = grd
+    backgroundGradient.context.fillRect(0, 0, game.width, game.height)
+    this.bg = game.add.tileSprite(0, 0, game.width, game.height, backgroundGradient)
     this.bg.fixedToCamera = true
 
-    //bottomline canvas ???
-    var myBottomGradient = game.add.bitmapData(game.width, 100);
-    var grdbtm = myBottomGradient.context.createLinearGradient(0,0,0,game.height);
-    grdbtm.addColorStop(0, "#00A0FF");
-    grdbtm.addColorStop(1, "#002CFF");
-    myBottomGradient.context.fillStyle = grdbtm;
-    myBottomGradient.context.fillRect(0,game.height-100,game.width,game.height);
-    this.bottombg = game.add.tileSprite(0, game.height-100, game.width, game.height, myBottomGradient);
+    var bottomGradient = game.add.bitmapData(game.width, 100)
+    var grdbtm = bottomGradient.context.createLinearGradient(0, 0, 0, game.height)
+    grdbtm.addColorStop(0, '#00A0FF')
+    grdbtm.addColorStop(1, '#002CFF')
+    bottomGradient.context.fillStyle = grdbtm
+    bottomGradient.context.fillRect(0, game.height - 100, game.width, game.height)
+    this.bottombg = game.add.tileSprite(0, game.height - 100, game.width, game.height, bottomGradient)
     this.bottombg.fixedToCamera = true
 
-    this.drawMountain(0.5,Math.floor((Math.random() * 200) + 100),Math.floor((Math.random() * 400) + 100),0)
+    this.drawMountain(0.5, Math.floor((Math.random() * 200) + 100), Math.floor((Math.random() * 400) + 100), 0)
     var mountainOffset = 0
-    while(mountainOffset <= totalGameWidth) {
+    while (mountainOffset <= totalGameWidth) {
       let randWidth = Math.floor((Math.random() * 200) + 100)
       mountainOffset += randWidth
 
       this.drawCloud(0.3, Math.floor((Math.random() * 100) + 60), mountainOffset)
-      this.drawMountain(0.5,randWidth,Math.floor((Math.random() * 400) + 100),mountainOffset)
+      this.drawMountain(0.5, randWidth, Math.floor((Math.random() * 400) + 100), mountainOffset)
     }
 
     this.stateText = game.add.text(50, 100, { font: 'bold 60px Arial', fill: 'white' })
@@ -142,7 +139,6 @@ export default class extends Phaser.State {
         continue
       }
       let block = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'block')
-      //let explosion = game.add.sprite(blockpositionX, game.world.centerY / 2 - yOffset, 'kaboom')
       block.height = blockSize
       block.width = blockSize
       block.body.immovable = true
@@ -152,7 +148,6 @@ export default class extends Phaser.State {
       })
       block.addChild(text)
       this.blocks.add(block)
-      //this.explosions.add(explosion)
     }
 
     //  An explosion pool
@@ -166,16 +161,16 @@ export default class extends Phaser.State {
     this.registerKeys()
   }
 
-  setupExplosions(explosion) {
-    explosion.anchor.x = 0.5;
-    explosion.anchor.y = 0.5;
-    explosion.animations.add('kaboom');
-}
+  setupExplosions (explosion) {
+    explosion.anchor.x = 0.5
+    explosion.anchor.y = 0.5
+    explosion.animations.add('kaboom')
+  }
 
   registerKeys () {
     for (let key in Phaser.KeyCode) {
       if (Phaser.KeyCode.hasOwnProperty(key) && key.match(/[a-z0-9]/i)) {
-        let realKey = it[key] || key
+        let realKey = charToWord[key] || key
         this.keys[realKey] = this.input.keyboard.addKey(Phaser.KeyCode[key])
       }
     }
@@ -193,8 +188,8 @@ export default class extends Phaser.State {
     let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
     if (nextBlock) {
       let nextLetter = nextBlock.value
-      nextLetter = it[nextLetter] || nextLetter
-      if (this.keys[nextLetter].isDown && nextLetter != this.previousLetter) {
+      nextLetter = charToWord[nextLetter] || nextLetter
+      if (this.keys[nextLetter].isDown && nextLetter !== this.previousLetter) {
         this.previousLetter = nextLetter
         if (this.indexOfAimingBlock + 1 < this.blocks.length) {
           this.indexOfAimingBlock = this.indexOfAimingBlock + 1
@@ -202,7 +197,7 @@ export default class extends Phaser.State {
           this.targetcross.position = aimingBlock.position
           this.shoot()
         }
-      } else if (this.previousLetter != '' && this.keys[this.previousLetter].isDown == false) {
+      } else if (this.previousLetter !== '' && !this.keys[this.previousLetter].isDown) {
         this.previousLetter = ''
       }
     }
@@ -252,9 +247,9 @@ export default class extends Phaser.State {
     block.kill()
     bullet.kill()
 
-    var explosion = this.explosions.getFirstExists(false);
-    explosion.reset(block.body.x, block.body.y);
-    explosion.play('kaboom', 30, false, true);
+    var explosion = this.explosions.getFirstExists(false)
+    explosion.reset(block.body.x, block.body.y)
+    explosion.play('kaboom', 30, false, true)
 
     this.explosionSound.play()
     this.refreshScore()
@@ -267,17 +262,19 @@ export default class extends Phaser.State {
   }
 
   setHighScore () {
-    let highScore
+    let uname = localStorage.getItem('username')
     if (this.score > this.highScore) {
       localStorage.setItem('highScore', this.score)
-      highScore = this.score
+      firebase.database().ref('scores/' + uname).set({
+        uname: uname,
+        score: this.score,
+        highScore: this.score
+      })
     }
 
-    let uname = localStorage.getItem('username')
     firebase.database().ref('scores/' + uname).set({
       uname: uname,
-      score: this.score,
-      highScore: highScore || null
+      score: this.score
     })
   }
 
@@ -286,26 +283,25 @@ export default class extends Phaser.State {
     game.state.start('Game')
   }
 
-  drawMountain(alpha, triangleX, triangleY, offset) {
-    var graphics = game.add.graphics(triangleX/2+offset, game.height-triangleY);
-    graphics.beginFill(0xFFFFFF);
+  drawMountain (alpha, triangleX, triangleY, offset) {
+    var graphics = game.add.graphics(triangleX / 2 + offset, game.height - triangleY)
+    graphics.beginFill(0xFFFFFF)
     graphics.alpha = alpha
-    graphics.lineTo(triangleX, triangleY);
-    graphics.lineTo(-triangleX, triangleY);
-    graphics.endFill();
+    graphics.lineTo(triangleX, triangleY)
+    graphics.lineTo(-triangleX, triangleY)
+    graphics.endFill()
   }
 
-  drawCloud(alpha, width, offset){
-    var graphics = game.add.graphics(0+offset, 0);
-    graphics.beginFill(0xFFFFFF);
+  drawCloud (alpha, width, offset) {
+    var graphics = game.add.graphics(0 + offset, 0)
+    graphics.beginFill(0xFFFFFF)
     graphics.alpha = alpha
-    //graphics.drawCircle(0, 0, radius);
-    //graphics.drawCircle(Math.floor((Math.random() * 100) + 60), 0, radius);
-    graphics.drawEllipse(0, 0, width, width/2.5);
-    graphics.drawEllipse((Math.random() * 100) + 60, 0, width, width/3);
-    graphics.endFill();
+    // graphics.drawCircle(0, 0, radius);
+    // graphics.drawCircle(Math.floor((Math.random() * 100) + 60), 0, radius);
+    graphics.drawEllipse(0, 0, width, width / 2.5)
+    graphics.drawEllipse((Math.random() * 100) + 60, 0, width, width / 3)
+    graphics.endFill()
   }
-
 
   render () {
     if (__DEV__) {
