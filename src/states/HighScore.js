@@ -2,6 +2,7 @@
 
 /* globals __DEV__, game */
 import Phaser from 'phaser'
+import * as firebase from 'firebase'
 
 export default class extends Phaser.State {
   init () {
@@ -28,10 +29,11 @@ export default class extends Phaser.State {
       game.state.start('GameMenu')
     })
 
-    for(var i = 0; i < 5; i++){
-          this.addHighScore('Test')
-    }
+    var topUserPostsRef = firebase.database().ref('scores').orderByChild('highScore');
+    topUserPostsRef.on('value', (snapshot) => {
 
+      for(let name of Object.keys(snapshot.val())){this.addHighScore(name + " : "+snapshot.val()[name].highScore)}
+    })
 
 
 
