@@ -32,7 +32,9 @@ export default class extends Phaser.State {
     var topUserPostsRef = firebase.database().ref('scores').orderByChild('highScore');
     topUserPostsRef.on('value', (snapshot) => {
 
-      for(let name of Object.keys(snapshot.val())){this.addHighScore(name + " : "+snapshot.val()[name].highScore)}
+      for(let name of Object.keys(snapshot.val())){
+        this.addHighScore(name + " : "+snapshot.val()[name].highScore)
+      }
     })
 
 
