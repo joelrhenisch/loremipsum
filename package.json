@@ -8,7 +8,8 @@
         "dev": "webpack",
         "deploy": "webpack --config webpack.production.config.js",
         "cordova": "webpack --config webpack.cordova.config.js",
-        "test": "eslint './src/**/*.js'"
+        "test": "eslint './src/**/*.js'",
+        "start": "webpack --config webpack.production.config.js"
     },
     "license": "MIT",
     "devDependencies": {
