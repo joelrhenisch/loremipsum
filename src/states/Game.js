@@ -189,10 +189,8 @@ export default class extends Phaser.State {
     this.enemy.body.velocity.x = this.enemyVelocity
     this.bg.tilePosition.x -= 1
 
-    let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
-    if (nextBlock) {
-      let nextLetter = nextBlock.value
-      nextLetter = charToWord[nextLetter] || nextLetter
+    let nextLetter = this.getNextLetter()
+    if (nextLetter) {
       if (this.keys[nextLetter].isDown && nextLetter !== this.previousLetter) {
         this.previousLetter = nextLetter
 
@@ -212,7 +210,16 @@ export default class extends Phaser.State {
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
   }
 
-  updateAimingBlock() {
+  getNextLetter () {
+    let nextBlock = this.blocks.getAt(this.indexOfAimingBlock)
+    if (nextBlock) {
+      let nextLetter = nextBlock.value
+      nextLetter = charToWord[nextLetter] || nextLetter
+      return nextLetter
+    }
+  }
+
+  updateAimingBlock () {
     if (this.indexOfAimingBlock + 1 < this.blocks.length) {
       this.indexOfAimingBlock = this.indexOfAimingBlock + 1
       let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
