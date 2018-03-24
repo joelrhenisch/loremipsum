@@ -192,10 +192,14 @@ export default class extends Phaser.State {
     let nextLetter = this.getNextLetter()
     if (nextLetter) {
       if (this.keys[nextLetter].isDown && nextLetter !== this.previousLetter) {
-        this.previousLetter = nextLetter
 
-        this.updateAimingBlock()
-        this.shoot()
+        let weaponFired = this.weapon.fire()
+        if (weaponFired) {
+          this.shootSound.play()
+          this.updateAimingBlock()
+          this.previousLetter = nextLetter
+        }
+
       } else if (this.previousLetter !== '' && !this.keys[this.previousLetter].isDown) {
         this.previousLetter = ''
       }
@@ -225,11 +229,6 @@ export default class extends Phaser.State {
       let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
       this.targetcross.position = aimingBlock.position
     }
-  }
-
-  shoot () {
-    this.weapon.fire()
-    this.shootSound.play()
   }
 
   win () {
