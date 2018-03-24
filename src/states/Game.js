@@ -195,11 +195,8 @@ export default class extends Phaser.State {
       nextLetter = charToWord[nextLetter] || nextLetter
       if (this.keys[nextLetter].isDown && nextLetter !== this.previousLetter) {
         this.previousLetter = nextLetter
-        if (this.indexOfAimingBlock + 1 < this.blocks.length) {
-          this.indexOfAimingBlock = this.indexOfAimingBlock + 1
-        }
-        let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
-        this.targetcross.position = aimingBlock.position
+
+        this.updateAimingBlock()
         this.shoot()
       } else if (this.previousLetter !== '' && !this.keys[this.previousLetter].isDown) {
         this.previousLetter = ''
@@ -213,6 +210,14 @@ export default class extends Phaser.State {
     game.physics.arcade.collide(this.player, this.blocks)
     game.physics.arcade.overlap(this.weapon.bullets, this.blocks, this.removeBlock, null, this)
     game.physics.arcade.overlap(this.enemy, this.player, this.killPlayer, null, this)
+  }
+
+  updateAimingBlock() {
+    if (this.indexOfAimingBlock + 1 < this.blocks.length) {
+      this.indexOfAimingBlock = this.indexOfAimingBlock + 1
+      let aimingBlock = this.blocks.getAt(this.indexOfAimingBlock)
+      this.targetcross.position = aimingBlock.position
+    }
   }
 
   shoot () {
